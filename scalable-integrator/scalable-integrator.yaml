@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  WSO2 Identity Server deployment with Clustering
+  WSO2 Enterprise Integrator deployment with Clustering
 Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
@@ -241,7 +241,7 @@ Resources:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
       VpcId: !Ref WSO2EIVPC
-      GroupDescription: WSO2 Identity Manager Security Group
+      GroupDescription: WSO2 Enterprise Integrator Security Group
       GroupName: WSO2SecurityGroup
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -767,7 +767,7 @@ Parameters:
       - m3.xlarge
       - m3.2xlarge
       - m4.large
-    ConstraintDescription: must be a valid EC2 instance type
+    ConstraintDescription: Must be a valid EC2 instance type
   JDK:
     Type: String
     Default: "jdk-8u144-linux-x64.tar.gz"
@@ -871,3 +871,4 @@ Mappings:
       Ubuntu140464bit: ami-to-be-added
     sa-east-1:
       Ubuntu140464bit: ami-to-be-added
+
