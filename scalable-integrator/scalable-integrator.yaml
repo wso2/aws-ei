@@ -731,7 +731,7 @@ Outputs:
           - WSO2EILoadBalancer
           - DNSName
         - ':9443/carbon'
-    Description: EI service store URL
+    Description: EI Carbon Management Console URL
 Parameters:
   AWSAccessKeyId:
     Description: >-
