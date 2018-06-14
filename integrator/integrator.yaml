@@ -676,8 +676,8 @@ Resources:
       LBCookieStickinessPolicy:
         - PolicyName: LBStickyPolicy
       Listeners:
-        - LoadBalancerPort: '9763'
-          InstancePort: '9763'
+        - LoadBalancerPort: '80'
+          InstancePort: '80'
           Protocol: HTTP
           InstanceProtocol: HTTP
           PolicyNames:
@@ -688,8 +688,8 @@ Resources:
           InstanceProtocol: HTTP
           PolicyNames:
             - LBStickyPolicy
-        - LoadBalancerPort: '9443'
-          InstancePort: '9443'
+        - LoadBalancerPort: '443'
+          InstancePort: '443'
           Protocol: HTTPS
           InstanceProtocol: HTTPS
           PolicyNames:

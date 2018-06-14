@@ -1,4 +1,4 @@
-# Scalable Integrator
+# Business-process
 
 ## Quick Start Guide
 
@@ -11,7 +11,7 @@ git clone https://github.com/wso2/aws-ei.git
 
 3. Go to [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home) and select ``Launch Cloudformer``.
 
-4. Browse to the cloned repository and select the [Scalable-Integrator](https://github.com/wso2/aws-ei/tree/master/scalable-integrator) Cloudformation template and proceed with the deployment.
+4. Browse to the cloned repository and select the [Business-Process](https://github.com/wso2/aws-ei/tree/master/business-process) Cloudformation template and proceed with the deployment.
 
 5. Follow the on screen instructions and provide the SSH key value pair name given in step 2, Server-Certificate-Name given in step 3 and other requested information and proceed.
 
