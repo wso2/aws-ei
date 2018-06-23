@@ -1257,11 +1257,24 @@ Resources:
         - PolicyName: LBStickyPolicy
       Listeners:
         - LoadBalancerPort: '80'
-          InstancePort: '80'
+          InstancePort: '9763'
           Protocol: HTTP
           InstanceProtocol: HTTP
           PolicyNames:
             - LBStickyPolicy
+        - LoadBalancerPort: '443'
+          InstancePort: '9443'
+          Protocol: HTTPS
+          InstanceProtocol: HTTPS
+          PolicyNames:
+            - LBStickyPolicy
+          SSLCertificateId: !Join
+            - ''
+            - - 'arn:aws:iam::'
+              - !Ref 'AWS::AccountId'
+              - ':server-certificate'
+              - /
+              - !Ref CertificateName
         - LoadBalancerPort: '8280'
           InstancePort: '8280'
           Protocol: HTTP
@@ -1315,7 +1328,7 @@ Resources:
         - PolicyName: LBStickyPolicy
       Listeners:
         - LoadBalancerPort: '80'
-          InstancePort: '80'
+          InstancePort: '9763'
           Protocol: HTTP
           InstanceProtocol: HTTP
           PolicyNames:
@@ -1326,6 +1339,19 @@ Resources:
           InstanceProtocol: HTTP
           PolicyNames:
             - LBStickyPolicy
+        - LoadBalancerPort: '443'
+          InstancePort: '9443'
+          Protocol: HTTPS
+          InstanceProtocol: HTTPS
+          PolicyNames:
+            - LBStickyPolicy
+          SSLCertificateId: !Join
+            - ''
+            - - 'arn:aws:iam::'
+              - !Ref 'AWS::AccountId'
+              - ':server-certificate'
+              - /
+              - !Ref CertificateName
         - LoadBalancerPort: '9443'
           InstancePort: '9443'
           Protocol: HTTPS
@@ -1373,7 +1399,7 @@ Resources:
         - PolicyName: LBStickyPolicy
       Listeners:
         - LoadBalancerPort: '80'
-          InstancePort: '80'
+          InstancePort: '9763'
           Protocol: HTTP
           InstanceProtocol: HTTP
           PolicyNames:
@@ -1385,6 +1411,19 @@ Resources:
           PolicyNames:
             - LBStickyPolicy
         - LoadBalancerPort: '9443'
+          InstancePort: '9443'
+          Protocol: HTTPS
+          InstanceProtocol: HTTPS
+          PolicyNames:
+            - LBStickyPolicy
+          SSLCertificateId: !Join
+            - ''
+            - - 'arn:aws:iam::'
+              - !Ref 'AWS::AccountId'
+              - ':server-certificate'
+              - /
+              - !Ref CertificateName
+        - LoadBalancerPort: '443'
           InstancePort: '9443'
           Protocol: HTTPS
           InstanceProtocol: HTTPS
@@ -1426,7 +1465,7 @@ Outputs:
         - !GetAtt
           - WSO2EILoadBalancer
           - DNSName
-        - ':9443/carbon'
+        - '/carbon'
     Description: Integrator Carbon Management Console URL
   AnalyticsCarbonURL:
     Value: !Join
@@ -1435,7 +1474,7 @@ Outputs:
         - !GetAtt
           - WSO2EIAnalyticsLoadBalancer
           - DNSName
-        - ':9443/carbon'
+        - '/carbon'
     Description: Analytics Management Console URL
   MessageBrokerCarbonURL:
     Value: !Join
@@ -1444,7 +1483,7 @@ Outputs:
         - !GetAtt
           - WSO2BrokerLoadBalancer
           - DNSName
-        - ':9443/carbon'
+        - '/carbon'
     Description: Analytics Management Console URL
 Parameters:
   AWSAccessKeyId:
