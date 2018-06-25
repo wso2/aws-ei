@@ -1503,7 +1503,7 @@ Outputs:
           - WSO2BrokerLoadBalancer
           - DNSName
         - '/carbon'
-    Description: Analytics Management Console URL
+    Description: Broker Management Console URL
 Parameters:
   AWSAccessKeyId:
     Description: >-
