@@ -10,3 +10,5 @@ This repository contains CloudFormation templates to deploy WSO2 Enterprise Inte
 ![pattern1](images/bps-cluster.png)
 ## Integrator with Analytics 
 ![pattern3](images/integrator-with-analytics.png)
+## Integrator, Broker with Analytics 
+![pattern4](images/integrator-broker-analytics.png)
