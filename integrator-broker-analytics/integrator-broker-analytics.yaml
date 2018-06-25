@@ -271,6 +271,10 @@ Resources:
           ToPort: '8243'
           SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
         - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
           FromPort: '5672'
           ToPort: '5672'
           SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
@@ -351,6 +355,10 @@ Resources:
         - IpProtocol: tcp
           FromPort: '5672'
           ToPort: '5672'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
           SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
         - IpProtocol: tcp
           FromPort: '5701'
@@ -1128,6 +1136,10 @@ Resources:
           FromPort: '5701'
           ToPort: '5701'
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: '9763'
@@ -1152,6 +1164,10 @@ Resources:
         - IpProtocol: tcp
           FromPort: '5701'
           ToPort: '5701'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
           CidrIp: 0.0.0.0/0
   WSO2EIAnalyticsLoadBalancerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
