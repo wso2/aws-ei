@@ -26,4 +26,6 @@ Allowed regions are:<br>
    * Username: admin <br>
    * Password: admin
 
+![image](../images/bps.png)
+
 **NOTE:** The services listed through above URLs may take around 15 minutes to become available, after stack creation.
