@@ -20,8 +20,6 @@ Metadata:
         Parameters:
           - DBUsername
           - DBPassword
-          - DBEngine
-          - DBEngineVersion
       - Label:
           default: Other Configurations
         Parameters:
@@ -41,10 +39,6 @@ Metadata:
         default: Database Master Username
       DBPassword:
         default: Database Master Password
-      DBEngine:
-        default: Database Engine
-      DBEngineVersion:
-        default: Database Engine Version
       JDK:
         default: JDK Version
       WUMUsername:
@@ -280,7 +274,10 @@ Resources:
     Properties:
       DisableApiTermination: 'false'
       InstanceInitiatedShutdownBehavior: stop
-      ImageId: ami-075f715f2a2357254
+      ImageId: !FindInMap
+        - WSO2EIAMIRegionMap
+        - !Ref 'AWS::Region'
+        - Ubuntu140464bit
       InstanceType: t2.micro
       KeyName: !Ref KeyPairName
       Monitoring: 'false'
@@ -335,6 +332,11 @@ Resources:
               - ''
               - - sed -i "s/access-key/
                 - !Ref AWSAccessKeyId
+                - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-5/default.yaml
+            - !Join
+              - ''
+              - - sed -i "s/REGION_NAME/
+                - !Ref "AWS::Region"
                 - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-5/default.yaml
             - !Join
               - ''
@@ -472,25 +474,25 @@ Resources:
             - sleep 60
             - 'if [ ! -d "/mnt/efs/deployment/server" ]; then'
             - '    mkdir -p /mnt/efs/deployment/server'
-            - '    cp -r /mnt/wso2ei-6.2.0/repository/deployment/server /mnt/efs/deployment'
+            - '    cp -r /mnt/wso2ei-6.3.0/repository/deployment/server /mnt/efs/deployment'
             - fi
             - >-
               rm -rf
-              /mnt/wso2ei-6.2.0/repository/deployment/server
+              /mnt/wso2ei-6.3.0/repository/deployment/server
             - >-
               ln -s /mnt/efs/deployment/server
-              /mnt/wso2ei-6.2.0/repository/deployment/server
+              /mnt/wso2ei-6.3.0/repository/deployment/server
             - 'if [ ! -d "/mnt/efs/tenants" ]; then'
             - '    mkdir -p /mnt/efs/tenants'
-            - '    cp -r /mnt/wso2ei-6.2.0/repository/tenants /mnt/efs'
+            - '    cp -r /mnt/wso2ei-6.3.0/repository/tenants /mnt/efs'
             - fi
             - >-
               rm -rf
-              /mnt/wso2ei-6.2.0/repository/tenants
+              /mnt/wso2ei-6.3.0/repository/tenants
             - >-
               ln -s /mnt/efs/tenants
-              /mnt/wso2ei-6.2.0/repository/tenants
-            - /mnt/wso2ei-6.2.0/bin/integrator.sh start
+              /mnt/wso2ei-6.3.0/repository/tenants
+            - /mnt/wso2ei-6.3.0/bin/integrator.sh start
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
     DependsOn:
@@ -561,25 +563,25 @@ Resources:
             - sleep 60
             - 'if [ ! -d "/mnt/efs/deployment/server" ]; then'
             - '    mkdir -p /mnt/efs/deployment/server'
-            - '    cp -r /mnt/wso2ei-6.2.0/repository/deployment/server /mnt/efs/deployment'
+            - '    cp -r /mnt/wso2ei-6.3.0/repository/deployment/server /mnt/efs/deployment'
             - fi
             - >-
               rm -rf
-              /mnt/wso2ei-6.2.0/repository/deployment/server
+              /mnt/wso2ei-6.3.0/repository/deployment/server
             - >-
               ln -s /mnt/efs/deployment/server
-              /mnt/wso2ei-6.2.0/repository/deployment/server
+              /mnt/wso2ei-6.3.0/repository/deployment/server
             - 'if [ ! -d "/mnt/efs/tenants" ]; then'
             - '    mkdir -p /mnt/efs/tenants'
-            - '    cp -r /mnt/wso2ei-6.2.0/repository/tenants /mnt/efs'
+            - '    cp -r /mnt/wso2ei-6.3.0/repository/tenants /mnt/efs'
             - fi
             - >-
               rm -rf
-              /mnt/wso2ei-6.2.0/repository/tenants
+              /mnt/wso2ei-6.3.0/repository/tenants
             - >-
               ln -s /mnt/efs/tenants
-              /mnt/wso2ei-6.2.0/repository/tenants
-            - /mnt/wso2ei-6.2.0/bin/integrator.sh start
+              /mnt/wso2ei-6.3.0/repository/tenants
+            - /mnt/wso2ei-6.3.0/bin/integrator.sh start
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
     DependsOn:
@@ -677,7 +679,7 @@ Resources:
         - PolicyName: LBStickyPolicy
       Listeners:
         - LoadBalancerPort: '80'
-          InstancePort: '80'
+          InstancePort: '9763'
           Protocol: HTTP
           InstanceProtocol: HTTP
           PolicyNames:
@@ -689,7 +691,7 @@ Resources:
           PolicyNames:
             - LBStickyPolicy
         - LoadBalancerPort: '443'
-          InstancePort: '443'
+          InstancePort: '9443'
           Protocol: HTTPS
           InstanceProtocol: HTTPS
           PolicyNames:
@@ -730,7 +732,7 @@ Outputs:
         - !GetAtt
           - WSO2EILoadBalancer
           - DNSName
-        - ':9443/carbon'
+        - '/carbon'
     Description: EI Carbon Management Console URL
 Parameters:
   AWSAccessKeyId:
@@ -775,20 +777,6 @@ Parameters:
     Description: Target Java version
     AllowedValues:
       - jdk-8u144-linux-x64.tar.gz
-  DBEngine:
-    Type: String
-    Default: "mysql"
-    Description: Database Engine
-    AllowedValues:
-      - mysql
-      - postgres
-      - mariadb
-      - sqlserver-ex
-      - oracle-se
-  DBEngineVersion:
-    Type: String
-    Default: "5.6.35"
-    Description: Database Engine version
   WUMPassword:
     Type: String
     Default: ""
@@ -799,13 +787,13 @@ Parameters:
     Default: ""
     Description: Enter WUM user name
   DBUsername:
-    Description: The username to be used in the WSO2 AM DB.
+    Description: The username to be used in the WSO2 Integrator DB.
     Type: String
     Default: root
     MinLength: 4
     AllowedPattern: '[A-Za-z0-9\-]+'
   DBPassword:
-    Description: The password to be used in the WSO2 AM DB.
+    Description: The password to be used in the WSO2 Integrator DB.
     Type: String
     Default: wso2carbon
     MinLength: 8
@@ -829,11 +817,11 @@ Mappings:
     eu-west-2:
       Ubuntu140464bit: ami-to-be-added
     us-east-1:
-      Ubuntu140464bit: ami-07f81ff13a29bd5cc
+      Ubuntu140464bit: ami-0c0668badb4082eaa
     us-east-2:
       Ubuntu140464bit: ami-to-be-added
     us-west-1:
-      Ubuntu140464bit: ami-to-be-added
+      Ubuntu140464bit: ami-02275fcbf2eed59ea
     us-west-2:
       Ubuntu140464bit: ami-to-be-added
     ca-central-1:
@@ -858,11 +846,11 @@ Mappings:
     eu-west-2:
       Ubuntu140464bit: ami-to-be-added
     us-east-1:
-      Ubuntu140464bit: ami-0ee8fa78b087a424c
+      Ubuntu140464bit: ami-0499b061a987e552f
     us-east-2:
       Ubuntu140464bit: ami-to-be-added
     us-west-1:
-      Ubuntu140464bit: ami-to-be-added
+      Ubuntu140464bit: ami-0db3e958d8ac6e8d5
     us-west-2:
       Ubuntu140464bit: ami-to-be-added
     ca-central-1:
