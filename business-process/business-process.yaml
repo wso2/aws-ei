@@ -699,7 +699,7 @@ Resources:
           InstanceProtocol: HTTP
           PolicyNames:
             - LBStickyPolicy
-        - LoadBalancerPort: '80'
+        - LoadBalancerPort: '8280'
           InstancePort: '8280'
           Protocol: HTTP
           InstanceProtocol: HTTP
