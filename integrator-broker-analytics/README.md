@@ -8,13 +8,13 @@ git clone https://github.com/wso2/aws-ei.git
 ```
 
 2. Go to [AWS console](https://console.aws.amazon.com/ec2/v2/home#KeyPairs:sort=keyName) and specify a key value pair for authentication in a preferred region. <br>
-Allowed regions are :<br>
-us-east-1 <br>
-us-west-1 <br>
-us-west-2 <br>
-eu-west-1 <br>
-us-east-2 <br>
-ap-southeast-2 <br>
+Allowed regions are:<br>
+* us-east-1 <br>
+* us-west-1 <br>
+* us-west-2 <br>
+* eu-west-1 <br>
+* us-east-2 <br>
+* ap-southeast-2 <br>
 
 This could be used to ssh into the instances. Add a Server Certificate to AWS using ACM or IAM as explained [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html). This will be used at the load balancer listeners.
 
