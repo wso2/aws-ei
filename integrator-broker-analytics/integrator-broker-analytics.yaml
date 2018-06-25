@@ -1,3 +1,17 @@
+# Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   WSO2 Enterprise Integrator Clustered deployment with Analytics Configured
@@ -21,9 +35,8 @@ Metadata:
           - DBUsername
           - DBPassword
       - Label:
-          default: Other Configurations
+          default: WSO2 Subscription Credentials
         Parameters:
-          - JDK
           - WUMUsername
           - WUMPassword
     ParameterLabels:
@@ -36,9 +49,9 @@ Metadata:
       KeyPairName:
         default: Key Pair Name
       DBUsername:
-        default: Database Master Username
+        default: Database Username
       DBPassword:
-        default: Database Master Password
+        default: Database Password
       JDK:
         default: JDK Version
       WUMUsername:
@@ -471,7 +484,7 @@ Resources:
             - !Join
               - ''
               - - sed -i "s/JDK_VERSION/
-                - !Ref JDK
+                - 'jdk-8u144-linux-x64.tar.gz'
                 - /g" /etc/puppet/hieradata/dev/wso2/common.yaml
             - !Join
               - ''
@@ -612,7 +625,7 @@ Resources:
                   - PuppetMaster
                   - PrivateIp
             - echo "${PuppetmasterIP} puppet puppetmaster" >> /etc/hosts
-            - !Sub "./home/ubuntu/set_jdk.sh ${JDK}"
+            - !Sub "./home/ubuntu/set_jdk.sh jdk-8u144-linux-x64.tar.gz"
             - mkdir -p /mnt/efs
             - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
             - sleep 400
@@ -664,9 +677,9 @@ Resources:
                 - >-
                   /g"
                   /mnt/wso2ei-6.3.0/conf/jndi.properties
-            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/andes-client-3.2.45.jar /mnt/wso2ei-6.3.0/lib/andes-client-3.2.45.jar
-            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/geronimo-jms_1.1_spec-1.1.0.wso2v1.jar /mnt/wso2ei-6.3.0/lib/geronimo-jms_1.1_spec-1.1.0.wso2v1.jar
-            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/org.wso2.securevault-1.0.0-wso2v2.jar /mnt/wso2ei-6.3.0/lib/org.wso2.securevault-1.0.0-wso2v2.jar
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/andes-client-*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/geronimo-jms_*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/org.wso2.securevault-*.jar /mnt/wso2ei-6.3.0/lib/
             - /mnt/wso2ei-6.3.0/bin/integrator.sh start
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
@@ -733,7 +746,7 @@ Resources:
                   - PuppetMaster
                   - PrivateIp
             - echo "${PuppetmasterIP} puppet puppetmaster" >> /etc/hosts
-            - !Sub "./home/ubuntu/set_jdk.sh ${JDK}"
+            - !Sub "./home/ubuntu/set_jdk.sh jdk-8u144-linux-x64.tar.gz"
             - mkdir -p /mnt/efs
             - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
             - sleep 425
@@ -785,9 +798,9 @@ Resources:
                 - >-
                   /g"
                   /mnt/wso2ei-6.3.0/conf/jndi.properties
-            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/andes-client-3.2.45.jar /mnt/wso2ei-6.3.0/lib/andes-client-3.2.45.jar
-            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/geronimo-jms_1.1_spec-1.1.0.wso2v1.jar /mnt/wso2ei-6.3.0/lib/geronimo-jms_1.1_spec-1.1.0.wso2v1.jar
-            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/org.wso2.securevault-1.0.0-wso2v2.jar /mnt/wso2ei-6.3.0/lib/org.wso2.securevault-1.0.0-wso2v2.jar
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/andes-client-*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/geronimo-jms_*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/org.wso2.securevault-*.jar /mnt/wso2ei-6.3.0/lib/
             - /mnt/wso2ei-6.3.0/bin/integrator.sh start
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
@@ -855,7 +868,7 @@ Resources:
                   - PuppetMaster
                   - PrivateIp
             - echo "${PuppetmasterIP} puppet puppetmaster" >> /etc/hosts
-            - !Sub "./home/ubuntu/set_jdk.sh ${JDK}"
+            - !Sub "./home/ubuntu/set_jdk.sh jdk-8u144-linux-x64.tar.gz"
             - sleep 375
             - sudo /opt/ei/integrator-broker-analytics/analytics/setup.sh start
             - sleep 60
@@ -923,7 +936,7 @@ Resources:
                   - PuppetMaster
                   - PrivateIp
             - echo "${PuppetmasterIP} puppet puppetmaster" >> /etc/hosts
-            - !Sub "./home/ubuntu/set_jdk.sh ${JDK}"
+            - !Sub "./home/ubuntu/set_jdk.sh jdk-8u144-linux-x64.tar.gz"
             - mkdir -p /mnt/efs/broker
             - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
             - sleep 400
@@ -954,6 +967,9 @@ Resources:
             - >-
               ln -s /mnt/efs/broker/tenants
               /mnt/wso2ei-6.3.0/wso2/broker/repository/tenants
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/andes-client-*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/geronimo-jms_*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/org.wso2.securevault-*.jar /mnt/wso2ei-6.3.0/lib/
             - /mnt/wso2ei-6.3.0/wso2/broker/bin/wso2server.sh start
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
@@ -1018,7 +1034,7 @@ Resources:
                   - PuppetMaster
                   - PrivateIp
             - echo "${PuppetmasterIP} puppet puppetmaster" >> /etc/hosts
-            - !Sub "./home/ubuntu/set_jdk.sh ${JDK}"
+            - !Sub "./home/ubuntu/set_jdk.sh jdk-8u144-linux-x64.tar.gz"
             - mkdir -p /mnt/efs
             - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
             - sleep 425
@@ -1049,6 +1065,9 @@ Resources:
             - >-
               ln -s /mnt/efs/broker/tenants
               /mnt/wso2ei-6.3.0/wso2/broker/repository/tenants
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/andes-client-*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/geronimo-jms_*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/org.wso2.securevault-*.jar /mnt/wso2ei-6.3.0/lib/
             - /mnt/wso2ei-6.3.0/wso2/broker/bin/wso2server.sh start
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
@@ -1496,11 +1515,10 @@ Parameters:
     Type: String
   KeyPairName:
     Description: >-
-      The key pair to establish a SSH connection to the web servers. This should
-      be already created.
+      The key pair to establish a SSH connection to the web servers
     Type: 'AWS::EC2::KeyPair::KeyName'
   CertificateName:
-    Description: A previously uploaded certificate to use at the Load Balancer Listeners.
+    Description: A previously uploaded certificate to use at the Load Balancer Listeners
     Type: String
     MinLength: 1
   WSO2InstanceType:
@@ -1518,12 +1536,6 @@ Parameters:
       - m3.2xlarge
       - m4.large
     ConstraintDescription: Must be a valid EC2 instance type
-  JDK:
-    Type: String
-    Default: "jdk-8u144-linux-x64.tar.gz"
-    Description: Java version
-    AllowedValues:
-      - jdk-8u144-linux-x64.tar.gz
   WUMPassword:
     Type: String
     Default: ""
@@ -1534,71 +1546,39 @@ Parameters:
     Default: ""
     Description: Enter WSO2 Username
   DBUsername:
-    Description: The Username for the WSO2 AM Database
+    Description: Enter Username for the WSO2 EI Database
     Type: String
     MinLength: 4
     AllowedPattern: '[A-Za-z0-9\-]+'
   DBPassword:
-    Description: The Password for the WSO2 AM Database
+    Description: Enter Password for the WSO2 EI Database
     Type: String
     MinLength: 8
     NoEcho: true
 Mappings:
   WSO2PuppetMasterRegionMap:
-    ap-northeast-1:
-      Ubuntu140464bit: ami-to-be-added
-    ap-northeast-2:
-      Ubuntu140464bit: ami-to-be-added
-    ap-south-1:
-      Ubuntu140464bit: ami-to-be-added
-    ap-southeast-1:
-      Ubuntu140464bit: ami-to-be-added
     ap-southeast-2:
-      Ubuntu140464bit: ami-to-be-added
-    eu-central-1:
-      Ubuntu140464bit: ami-to-be-added
+      Ubuntu140464bit: ami-0a0075377e2fc407d
     eu-west-1:
-      Ubuntu140464bit: ami-to-be-added
-    eu-west-2:
-      Ubuntu140464bit: ami-to-be-added
+      Ubuntu140464bit: ami-0ef32aec34e07c718
     us-east-1:
-      Ubuntu140464bit: ami-09fd77855310d0c9f
+      Ubuntu140464bit: ami-008d181a63651b582
     us-east-2:
-      Ubuntu140464bit: ami-to-be-added
+      Ubuntu140464bit: ami-0148befd98fb35693
     us-west-1:
-      Ubuntu140464bit: ami-02de5742c08ab088c
+      Ubuntu140464bit: ami-0fe9d57d64d67a03a
     us-west-2:
-      Ubuntu140464bit: ami-to-be-added
-    ca-central-1:
-      Ubuntu140464bit: ami-to-be-added
-    sa-east-1:
-      Ubuntu140464bit: ami-to-be-added
+      Ubuntu140464bit: ami-01bbc34c5b696d065
   WSO2EIAMIRegionMap:
-    ap-northeast-1:
-      Ubuntu140464bit: ami-to-be-added
-    ap-northeast-2:
-      Ubuntu140464bit: ami-to-be-added
-    ap-south-1:
-      Ubuntu140464bit: ami-to-be-added
-    ap-southeast-1:
-      Ubuntu140464bit: ami-to-be-added
     ap-southeast-2:
-      Ubuntu140464bit: ami-to-be-added
-    eu-central-1:
-      Ubuntu140464bit: ami-to-be-added
+      Ubuntu140464bit: ami-07b4d771c61181643
     eu-west-1:
-      Ubuntu140464bit: ami-to-be-added
-    eu-west-2:
-      Ubuntu140464bit: ami-to-be-added
+      Ubuntu140464bit: ami-02b3848459aabcb56
     us-east-1:
-      Ubuntu140464bit: ami-07e47439283051891
+      Ubuntu140464bit: ami-0fd3e4fe7d4b946c6
     us-east-2:
-      Ubuntu140464bit: ami-to-be-added
+      Ubuntu140464bit: ami-0e744f8c10141f30a
     us-west-1:
-      Ubuntu140464bit: ami-002d9f411f96b92d1
+      Ubuntu140464bit: ami-017a445e320589411
     us-west-2:
-      Ubuntu140464bit: ami-to-be-added
-    ca-central-1:
-      Ubuntu140464bit: ami-to-be-added
-    sa-east-1:
-      Ubuntu140464bit: ami-to-be-added
+      Ubuntu140464bit: ami-0c18c05b6d53c0139

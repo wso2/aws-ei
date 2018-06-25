@@ -19,6 +19,6 @@ git clone https://github.com/wso2/aws-ei.git
    * Username: admin <br>
    * Password: admin
 
-![image](../images/Integrator-broker-analytic.png)
+![image](../images/integrator-broker-analytics.png)
 
 **NOTE:** The services listed through the **Outputs** tab may take around 15 minutes to become available, after stack creation.
