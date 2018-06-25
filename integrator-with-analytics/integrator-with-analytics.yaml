@@ -318,6 +318,22 @@ Resources:
           ToPort: '5701'
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '7711'
+          ToPort: '7711'
+          SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '9711'
+          ToPort: '9711'
+          SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '9611'
+          ToPort: '9611'
+          SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
+        - IpProtocol: tcp
           FromPort: '8140'
           ToPort: '8140'
           SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
@@ -796,7 +812,6 @@ Resources:
     Properties:
       VpcId: !Ref WSO2EIVPC
       GroupDescription: WSO2 EI ELB Security Group
-      SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: '9763'
           ToPort: '9763'
@@ -820,6 +835,30 @@ Resources:
         - IpProtocol: tcp
           FromPort: '5701'
           ToPort: '5701'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7711'
+          ToPort: '7711'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7711'
+          ToPort: '7711'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '9711'
+          ToPort: '9711'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '9611'
+          ToPort: '9611'
           CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
         - IpProtocol: tcp
@@ -845,6 +884,22 @@ Resources:
         - IpProtocol: tcp
           FromPort: '5701'
           ToPort: '5701'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7711'
+          ToPort: '7711'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '9711'
+          ToPort: '9711'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '9611'
+          ToPort: '9611'
           CidrIp: 0.0.0.0/0
   WSO2EILoadBalancerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
