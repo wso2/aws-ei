@@ -391,7 +391,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: '7611'
           ToPort: '7611'
-          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: '8672'
           ToPort: '8672'
