@@ -320,7 +320,7 @@ Resources:
         - IpProtocol: tcp
           FromPort: '7611'
           ToPort: '7611'
-          SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: '7711'
           ToPort: '7711'
