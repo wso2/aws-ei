@@ -271,8 +271,28 @@ Resources:
           ToPort: '8243'
           SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
         - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
           FromPort: '5672'
           ToPort: '5672'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '8672'
+          ToPort: '8672'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '5672'
+          ToPort: '5672'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '8833'
+          ToPort: '8833'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '1883'
+          ToPort: '1883'
           SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
         - IpProtocol: tcp
           FromPort: '5701'
@@ -314,6 +334,22 @@ Resources:
           ToPort: '5672'
           SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
         - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '7711'
+          ToPort: '7711'
+          SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '9711'
+          ToPort: '9711'
+          SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '9611'
+          ToPort: '9611'
+          SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
+        - IpProtocol: tcp
           FromPort: '5701'
           ToPort: '5701'
           CidrIp: 0.0.0.0/0
@@ -351,6 +387,26 @@ Resources:
         - IpProtocol: tcp
           FromPort: '5672'
           ToPort: '5672'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8672'
+          ToPort: '8672'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '5672'
+          ToPort: '5672'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '8833'
+          ToPort: '8833'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '1883'
+          ToPort: '1883'
           SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
         - IpProtocol: tcp
           FromPort: '5701'
@@ -1128,10 +1184,34 @@ Resources:
           FromPort: '5701'
           ToPort: '5701'
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '5672'
+          ToPort: '5672'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8672'
+          ToPort: '8672'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8833'
+          ToPort: '8833'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '1883'
+          ToPort: '1883'
+          CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: '9763'
           ToPort: '9763'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '5672'
+          ToPort: '5672'
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: '9443'
@@ -1152,6 +1232,22 @@ Resources:
         - IpProtocol: tcp
           FromPort: '5701'
           ToPort: '5701'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8833'
+          ToPort: '8833'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8672'
+          ToPort: '8672'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '1883'
+          ToPort: '1883'
           CidrIp: 0.0.0.0/0
   WSO2EIAnalyticsLoadBalancerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
@@ -1183,6 +1279,30 @@ Resources:
           FromPort: '5701'
           ToPort: '5701'
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7711'
+          ToPort: '7711'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7711'
+          ToPort: '7711'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '9711'
+          ToPort: '9711'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '9611'
+          ToPort: '9611'
+          CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
         - IpProtocol: tcp
           FromPort: '9763'
@@ -1207,6 +1327,22 @@ Resources:
         - IpProtocol: tcp
           FromPort: '5701'
           ToPort: '5701'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7711'
+          ToPort: '7711'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '9711'
+          ToPort: '9711'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '9611'
+          ToPort: '9611'
           CidrIp: 0.0.0.0/0
   WSO2EILoadBalancerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
