@@ -812,6 +812,7 @@ Resources:
     Properties:
       VpcId: !Ref WSO2EIVPC
       GroupDescription: WSO2 EI ELB Security Group
+      SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: '9763'
           ToPort: '9763'
