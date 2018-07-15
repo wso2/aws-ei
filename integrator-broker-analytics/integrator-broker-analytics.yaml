@@ -185,7 +185,7 @@ Resources:
     Properties:
       VPCSecurityGroups:
         - !Ref WSO2EIDBInstanceSecurityGroup
-      DBInstanceClass: db.t2.medium
+      DBInstanceClass: db.t2.large
       AllocatedStorage: 5
       BackupRetentionPeriod: '0'
       DBInstanceIdentifier: WSO2EIDBInstance
@@ -271,8 +271,28 @@ Resources:
           ToPort: '8243'
           SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
         - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
           FromPort: '5672'
           ToPort: '5672'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '8672'
+          ToPort: '8672'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '5672'
+          ToPort: '5672'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '8833'
+          ToPort: '8833'
+          SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '1883'
+          ToPort: '1883'
           SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
         - IpProtocol: tcp
           FromPort: '5701'
@@ -314,13 +334,9 @@ Resources:
           ToPort: '5672'
           SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
         - IpProtocol: tcp
-          FromPort: '5701'
-          ToPort: '5701'
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
           FromPort: '7611'
           ToPort: '7611'
-          CidrIp: 0.0.0.0/0
+          SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
         - IpProtocol: tcp
           FromPort: '7711'
           ToPort: '7711'
@@ -334,9 +350,72 @@ Resources:
           ToPort: '9611'
           SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
         - IpProtocol: tcp
+          FromPort: '5701'
+          ToPort: '5701'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
           FromPort: '8140'
           ToPort: '8140'
           SourceSecurityGroupId: !Ref WSO2EIAnalyticsLoadBalancerSecurityGroup
+  WSO2BrokerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref WSO2EIVPC
+      GroupDescription: WSO2 Enterprise Integrator Security Group
+      GroupName: WSO2BrokerSecurityGroup
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8280'
+          ToPort: '8280'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '9763'
+          ToPort: '9763'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '9443'
+          ToPort: '9443'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '8243'
+          ToPort: '8243'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '5672'
+          ToPort: '5672'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8672'
+          ToPort: '8672'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '5672'
+          ToPort: '5672'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '8833'
+          ToPort: '8833'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '1883'
+          ToPort: '1883'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '5701'
+          ToPort: '5701'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8140'
+          ToPort: '8140'
+          SourceSecurityGroupId: !Ref WSO2BrokerLoadBalancerSecurityGroup
   WSO2BastionInstance:
     Type: 'AWS::EC2::Instance'
     Properties:
@@ -400,22 +479,27 @@ Resources:
               - ''
               - - sed -i "s/access-key/
                 - !Ref AWSAccessKeyId
-                - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-6/analytics.yaml
-            - !Join
-              - ''
-              - - sed -i "s/REGION_NAME/
-                - !Ref "AWS::Region"
-                - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-6/analytics.yaml
+                - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/analytics.yaml
             - !Join
               - ''
               - - sed -i "s/access-key/
                 - !Ref AWSAccessKeyId
-                - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-6/integrator.yaml
+                - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/integrator.yaml
+            - !Join
+              - ''
+              - - sed -i "s/access-key/
+                - !Ref AWSAccessKeyId
+                - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/broker.yaml
             - !Join
               - ''
               - - sed -i "s/REGION_NAME/
                 - !Ref "AWS::Region"
-                - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-6/integrator.yaml
+                - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/integrator.yaml
+            - !Join
+              - ''
+              - - sed -i "s/REGION_NAME/
+                - !Ref "AWS::Region"
+                - /g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/broker.yaml
             - !Join
               - ''
               - - sed -i "s/CF_ELB_DNS_NAME/
@@ -424,7 +508,7 @@ Resources:
                   - DNSName
                 - >-
                   /g"
-                  /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-6/analytics.yaml
+                  /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/analytics.yaml
             - !Join
               - ''
               - - sed -i "s/CF_ELB_DNS_NAME/
@@ -433,7 +517,16 @@ Resources:
                   - DNSName
                 - >-
                   /g"
-                  /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-6/integrator.yaml
+                  /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/integrator.yaml
+            - !Join
+              - ''
+              - - sed -i "s/CF_ELB_DNS_NAME/
+                - !GetAtt
+                  - WSO2BrokerLoadBalancer
+                  - DNSName
+                - >-
+                  /g"
+                  /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/broker.yaml
             - !Join
               - ''
               - - sed -i "s/CF_DB_USERNAME/
@@ -460,12 +553,17 @@ Resources:
               - ''
               - - sed -i "s^secretkey^
                 - !Ref AWSAccessKeySecret
-                - ^g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-6/analytics.yaml
+                - ^g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/analytics.yaml
             - !Join
               - ''
               - - sed -i "s^secretkey^
                 - !Ref AWSAccessKeySecret
-                - ^g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-6/integrator.yaml
+                - ^g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/integrator.yaml
+            - !Join
+              - ''
+              - - sed -i "s^secretkey^
+                - !Ref AWSAccessKeySecret
+                - ^g" /etc/puppet/hieradata/dev/wso2/wso2ei/pattern-10/broker.yaml
             - !Join
               - ''
               - - export DB_HOSTNAME=
@@ -511,6 +609,31 @@ Resources:
                   - Endpoint.Port
                 - /g" /home/ubuntu/ei/provision_db_ei.sh
             - bash /home/ubuntu/ei/provision_db_ei.sh
+            - !Join
+              - ''
+              - - sed -i "s/CF_DB_USERNAME/
+                - !Ref DBUsername
+                - /g" /home/ubuntu/ei/provision_db_mb.sh
+            - !Join
+              - ''
+              - - sed -i "s/CF_DB_PASSWORD/
+                - !Ref DBPassword
+                - /g" /home/ubuntu/ei/provision_db_mb.sh
+            - !Join
+              - ''
+              - - sed -i "s/CF_DB_HOST/
+                - !GetAtt
+                  - WSO2EIDBInstance
+                  - Endpoint.Address
+                - /g" /home/ubuntu/ei/provision_db_mb.sh
+            - !Join
+              - ''
+              - - sed -i "s/CF_DB_PORT/
+                - !GetAtt
+                  - WSO2EIDBInstance
+                  - Endpoint.Port
+                - /g" /home/ubuntu/ei/provision_db_mb.sh
+            - bash /home/ubuntu/ei/provision_db_mb.sh
   PuppetMasterSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -562,7 +685,7 @@ Resources:
             - mkdir -p /mnt/efs
             - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
             - sleep 400
-            - sudo /opt/ei/integrator-analytics/integrator/setup.sh start
+            - sudo /opt/ei/integrator-broker-analytics/integrator/setup.sh start
             - sleep 60
             - 'if [ ! -d "/mnt/efs/deployment/server" ]; then'
             - '    mkdir -p /mnt/efs/deployment/server'
@@ -601,11 +724,25 @@ Resources:
                 - >-
                   /g"
                   /mnt/wso2ei-6.3.0/repository/deployment/server/eventpublishers/MessageFlowStatisticsPublisher.xml
+            - !Join
+              - ''
+              - - sed -i "s/localhost/
+                - !GetAtt
+                  - WSO2BrokerLoadBalancer
+                  - DNSName
+                - >-
+                  /g"
+                  /mnt/wso2ei-6.3.0/conf/jndi.properties
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/andes-client-*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/geronimo-jms_*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/org.wso2.securevault-*.jar /mnt/wso2ei-6.3.0/lib/
             - /mnt/wso2ei-6.3.0/bin/integrator.sh start
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
     DependsOn:
       - WSO2EIAnalyticsNode1LaunchConfiguration
+      - WSO2BrokerNode1LaunchConfiguration
+      - WSO2BrokerNode2LaunchConfiguration
       - WSO2EISecurityGroup
       - WSO2EILoadBalancer
       - WSO2EIVPCInternetGatewayAttachment
@@ -668,8 +805,8 @@ Resources:
             - !Sub "./home/ubuntu/set_jdk.sh jdk-8u144-linux-x64.tar.gz"
             - mkdir -p /mnt/efs
             - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
-            - sleep 400
-            - sudo /opt/ei/integrator-analytics/integrator/setup.sh start
+            - sleep 425
+            - sudo /opt/ei/integrator-broker-analytics/integrator/setup.sh start
             - sleep 60
             - 'if [ ! -d "/mnt/efs/deployment/server" ]; then'
             - '    mkdir -p /mnt/efs/deployment/server'
@@ -708,11 +845,25 @@ Resources:
                 - >-
                   /g"
                   /mnt/wso2ei-6.3.0/repository/deployment/server/eventpublishers/MessageFlowStatisticsPublisher.xml
+            - !Join
+              - ''
+              - - sed -i "s/localhost/
+                - !GetAtt
+                  - WSO2BrokerLoadBalancer
+                  - DNSName
+                - >-
+                  /g"
+                  /mnt/wso2ei-6.3.0/conf/jndi.properties
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/andes-client-*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/geronimo-jms_*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/org.wso2.securevault-*.jar /mnt/wso2ei-6.3.0/lib/
             - /mnt/wso2ei-6.3.0/bin/integrator.sh start
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
     DependsOn:
       - WSO2EIAnalyticsNode1LaunchConfiguration
+      - WSO2BrokerNode1LaunchConfiguration
+      - WSO2BrokerNode2LaunchConfiguration
       - WSO2EISecurityGroup
       - WSO2EILoadBalancer
       - WSO2EIVPCInternetGatewayAttachment
@@ -774,8 +925,8 @@ Resources:
                   - PrivateIp
             - echo "${PuppetmasterIP} puppet puppetmaster" >> /etc/hosts
             - !Sub "./home/ubuntu/set_jdk.sh jdk-8u144-linux-x64.tar.gz"
-            - sleep 400
-            - sudo /opt/ei/integrator-analytics/analytics/setup.sh start
+            - sleep 375
+            - sudo /opt/ei/integrator-broker-analytics/analytics/setup.sh start
             - sleep 60
             - /mnt/wso2ei-6.3.0/wso2/analytics/bin/wso2server.sh start
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
@@ -807,6 +958,297 @@ Resources:
     DependsOn:
       - WSO2EIAnalyticsLoadBalancer
       - WSO2EIAnalyticsNode1LaunchConfiguration
+# Message Broker 1
+  WSO2BrokerNode1LaunchConfiguration:
+    Type: 'AWS::AutoScaling::LaunchConfiguration'
+    Properties:
+      ImageId: !FindInMap
+        - WSO2EIAMIRegionMap
+        - !Ref 'AWS::Region'
+        - Ubuntu140464bit
+      InstanceType: !Ref WSO2InstanceType
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: '20'
+            VolumeType: gp2
+            DeleteOnTermination: 'true'
+      KeyName: !Ref KeyPairName
+      SecurityGroups:
+        - !Ref WSO2BrokerSecurityGroup
+      UserData: !Base64
+        'Fn::Join':
+          - |+
+
+          - - '#!/bin/bash'
+            - 'export PATH=~/.local/bin:$PATH'
+            - apt-get update
+            - apt-get install -y nfs-common
+            - sed -i '/\[main\]/a server=puppet' /etc/puppet/puppet.conf
+            - !Join
+              - ''
+              - - export PuppetmasterIP=
+                - !GetAtt
+                  - PuppetMaster
+                  - PrivateIp
+            - echo "${PuppetmasterIP} puppet puppetmaster" >> /etc/hosts
+            - !Sub "./home/ubuntu/set_jdk.sh jdk-8u144-linux-x64.tar.gz"
+            - mkdir -p /mnt/efs/broker
+            - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
+            - sleep 400
+            - export LANGUAGE=en_US.UTF-8
+            - export LANG=en_US.UTF-8
+            - export LC_ALL=en_US.UTF-8
+            - locale-gen en_US.UTF-8
+            - dpkg-reconfigure locales
+            - sudo /opt/ei/integrator-broker-analytics/broker/setup.sh start
+            - sleep 60
+            - 'if [ ! -d "/mnt/efs/broker/deployment/server" ]; then'
+            - '    mkdir -p /mnt/efs/broker/deployment/server'
+            - '    cp -r /mnt/wso2ei-6.3.0/wso2/broker/repository/deployment/server /mnt/efs/broker/deployment'
+            - fi
+            - >-
+              rm -rf
+              /mnt/wso2ei-6.3.0/wso2/broker/repository/deployment/server
+            - >-
+              ln -s /mnt/efs/broker/deployment/server
+              /mnt/wso2ei-6.3.0/wso2/broker/repository/deployment/server
+            - 'if [ ! -d "/mnt/efs/broker/tenants" ]; then'
+            - '    mkdir -p /mnt/efs/broker/tenants'
+            - '    cp -r /mnt/wso2ei-6.3.0/wso2/broker/repository/tenants /mnt/efs/broker/'
+            - fi
+            - >-
+              rm -rf
+              /mnt/wso2ei-6.3.0/wso2/broker/repository/tenants
+            - >-
+              ln -s /mnt/efs/broker/tenants
+              /mnt/wso2ei-6.3.0/wso2/broker/repository/tenants
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/andes-client-*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/geronimo-jms_*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/org.wso2.securevault-*.jar /mnt/wso2ei-6.3.0/lib/
+            - /mnt/wso2ei-6.3.0/wso2/broker/bin/wso2server.sh start
+            - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
+            - cat /dev/null > ~/.bash_history && history -c
+    DependsOn:
+      - WSO2BrokerSecurityGroup
+      - WSO2BrokerLoadBalancer
+      - WSO2EIVPCInternetGatewayAttachment
+      - WSO2EIDBInstance
+      - PuppetMaster
+  WSO2BrokerNode1AutoScalingGroup:
+    Type: 'AWS::AutoScaling::AutoScalingGroup'
+    Properties:
+      LaunchConfigurationName: !Ref WSO2BrokerNode1LaunchConfiguration
+      DesiredCapacity: 1
+      MinSize: 1
+      MaxSize: 1
+      LoadBalancerNames:
+        - !Ref WSO2BrokerLoadBalancer
+      VPCZoneIdentifier:
+        - !Ref WSO2EIPrivateSubnet1
+      Tags:
+        - Key: Name
+          Value: WSO2BrokerInstance1
+          PropagateAtLaunch: 'true'
+        - Key: cluster
+          Value: ei-broker
+          PropagateAtLaunch: 'true'
+    DependsOn:
+      - WSO2BrokerLoadBalancer
+      - WSO2BrokerNode1LaunchConfiguration
+# Message Broker 2
+  WSO2BrokerNode2LaunchConfiguration:
+    Type: 'AWS::AutoScaling::LaunchConfiguration'
+    Properties:
+      ImageId: !FindInMap
+        - WSO2EIAMIRegionMap
+        - !Ref 'AWS::Region'
+        - Ubuntu140464bit
+      InstanceType: !Ref WSO2InstanceType
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: '20'
+            VolumeType: gp2
+            DeleteOnTermination: 'true'
+      KeyName: !Ref KeyPairName
+      SecurityGroups:
+        - !Ref WSO2BrokerSecurityGroup
+      UserData: !Base64
+        'Fn::Join':
+          - |+
+
+          - - '#!/bin/bash'
+            - 'export PATH=~/.local/bin:$PATH'
+            - apt-get update
+            - apt-get install -y nfs-common
+            - sed -i '/\[main\]/a server=puppet' /etc/puppet/puppet.conf
+            - !Join
+              - ''
+              - - export PuppetmasterIP=
+                - !GetAtt
+                  - PuppetMaster
+                  - PrivateIp
+            - echo "${PuppetmasterIP} puppet puppetmaster" >> /etc/hosts
+            - !Sub "./home/ubuntu/set_jdk.sh jdk-8u144-linux-x64.tar.gz"
+            - mkdir -p /mnt/efs
+            - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
+            - sleep 425
+            - export LANGUAGE=en_US.UTF-8
+            - export LANG=en_US.UTF-8
+            - export LC_ALL=en_US.UTF-8
+            - locale-gen en_US.UTF-8
+            - dpkg-reconfigure locales
+            - sudo /opt/ei/integrator-broker-analytics/broker/setup.sh start
+            - sleep 60
+            - 'if [ ! -d "/mnt/efs/broker/deployment/server" ]; then'
+            - '    mkdir -p /mnt/efs/broker/deployment/server'
+            - '    cp -r /mnt/wso2ei-6.3.0/wso2/broker/repository/deployment/server /mnt/efs/broker/deployment'
+            - fi
+            - >-
+              rm -rf
+              /mnt/wso2ei-6.3.0/wso2/broker/repository/deployment/server
+            - >-
+              ln -s /mnt/efs/broker/deployment/server
+              /mnt/wso2ei-6.3.0/wso2/broker/repository/deployment/server
+            - 'if [ ! -d "/mnt/efs/broker/tenants" ]; then'
+            - '    mkdir -p /mnt/efs/broker/tenants'
+            - '    cp -r /mnt/wso2ei-6.3.0/wso2/broker/repository/tenants /mnt/efs/broker/'
+            - fi
+            - >-
+              rm -rf
+              /mnt/wso2ei-6.3.0/wso2/broker/repository/tenants
+            - >-
+              ln -s /mnt/efs/broker/tenants
+              /mnt/wso2ei-6.3.0/wso2/broker/repository/tenants
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/andes-client-*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/geronimo-jms_*.jar /mnt/wso2ei-6.3.0/lib/
+            - cp /mnt/wso2ei-6.3.0/wso2/broker/client-lib/org.wso2.securevault-*.jar /mnt/wso2ei-6.3.0/lib/
+            - /mnt/wso2ei-6.3.0/wso2/broker/bin/wso2server.sh start
+            - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
+            - cat /dev/null > ~/.bash_history && history -c
+    DependsOn:
+      - WSO2BrokerSecurityGroup
+      - WSO2BrokerLoadBalancer
+      - WSO2EIVPCInternetGatewayAttachment
+      - WSO2EIDBInstance
+      - PuppetMaster
+  WSO2BrokerNode2AutoScalingGroup:
+    Type: 'AWS::AutoScaling::AutoScalingGroup'
+    Properties:
+      LaunchConfigurationName: !Ref WSO2BrokerNode2LaunchConfiguration
+      DesiredCapacity: 1
+      MinSize: 1
+      MaxSize: 1
+      LoadBalancerNames:
+        - !Ref WSO2BrokerLoadBalancer
+      VPCZoneIdentifier:
+        - !Ref WSO2EIPrivateSubnet2
+      Tags:
+        - Key: Name
+          Value: WSO2BrokerInstance2
+          PropagateAtLaunch: 'true'
+        - Key: cluster
+          Value: ei-broker
+          PropagateAtLaunch: 'true'
+    DependsOn:
+      - WSO2BrokerLoadBalancer
+      - WSO2BrokerNode2LaunchConfiguration
+  WSO2BrokerLoadBalancerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref WSO2EIVPC
+      GroupDescription: WSO2 EI ELB Security Group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '9763'
+          ToPort: '9763'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '9443'
+          ToPort: '9443'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8243'
+          ToPort: '8243'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8280'
+          ToPort: '8280'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '5701'
+          ToPort: '5701'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '5672'
+          ToPort: '5672'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8672'
+          ToPort: '8672'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8833'
+          ToPort: '8833'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '1883'
+          ToPort: '1883'
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: '9763'
+          ToPort: '9763'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '5672'
+          ToPort: '5672'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '9443'
+          ToPort: '9443'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8243'
+          ToPort: '8243'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8280'
+          ToPort: '8280'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '5701'
+          ToPort: '5701'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '7611'
+          ToPort: '7611'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8833'
+          ToPort: '8833'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8672'
+          ToPort: '8672'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '1883'
+          ToPort: '1883'
+          CidrIp: 0.0.0.0/0
   WSO2EIAnalyticsLoadBalancerSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -975,13 +1417,7 @@ Resources:
           InstanceProtocol: HTTP
           PolicyNames:
             - LBStickyPolicy
-        - LoadBalancerPort: '8280'
-          InstancePort: '8280'
-          Protocol: HTTP
-          InstanceProtocol: HTTP
-          PolicyNames:
-            - LBStickyPolicy
-        - LoadBalancerPort: '9443'
+        - LoadBalancerPort: '443'
           InstancePort: '9443'
           Protocol: HTTPS
           InstanceProtocol: HTTPS
@@ -994,7 +1430,13 @@ Resources:
               - ':server-certificate'
               - /
               - !Ref CertificateName
-        - LoadBalancerPort: '443'
+        - LoadBalancerPort: '8280'
+          InstancePort: '8280'
+          Protocol: HTTP
+          InstanceProtocol: HTTP
+          PolicyNames:
+            - LBStickyPolicy
+        - LoadBalancerPort: '9443'
           InstancePort: '9443'
           Protocol: HTTPS
           InstanceProtocol: HTTPS
@@ -1028,6 +1470,77 @@ Resources:
           Timeout: '5'
     DependsOn:
       - WSO2EILoadBalancerSecurityGroup
+  WSO2BrokerLoadBalancer:
+    Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
+    Properties:
+      CrossZone: true
+      SecurityGroups:
+        - !Ref WSO2BrokerLoadBalancerSecurityGroup
+      Subnets:
+        - !Ref WSO2EIPublicSubnet2
+        - !Ref WSO2EIPublicSubnet1
+      LBCookieStickinessPolicy:
+        - PolicyName: LBStickyPolicy
+      Listeners:
+        - LoadBalancerPort: '80'
+          InstancePort: '9763'
+          Protocol: HTTP
+          InstanceProtocol: HTTP
+          PolicyNames:
+            - LBStickyPolicy
+        - LoadBalancerPort: '8280'
+          InstancePort: '8280'
+          Protocol: HTTP
+          InstanceProtocol: HTTP
+          PolicyNames:
+            - LBStickyPolicy
+        - LoadBalancerPort: '443'
+          InstancePort: '9443'
+          Protocol: HTTPS
+          InstanceProtocol: HTTPS
+          PolicyNames:
+            - LBStickyPolicy
+          SSLCertificateId: !Join
+            - ''
+            - - 'arn:aws:iam::'
+              - !Ref 'AWS::AccountId'
+              - ':server-certificate'
+              - /
+              - !Ref CertificateName
+        - LoadBalancerPort: '9443'
+          InstancePort: '9443'
+          Protocol: HTTPS
+          InstanceProtocol: HTTPS
+          PolicyNames:
+            - LBStickyPolicy
+          SSLCertificateId: !Join
+            - ''
+            - - 'arn:aws:iam::'
+              - !Ref 'AWS::AccountId'
+              - ':server-certificate'
+              - /
+              - !Ref CertificateName
+        - LoadBalancerPort: '8243'
+          InstancePort: '8243'
+          Protocol: HTTPS
+          InstanceProtocol: HTTPS
+          PolicyNames:
+            - LBStickyPolicy
+          SSLCertificateId: !Join
+            - ''
+            - - 'arn:aws:iam::'
+              - !Ref 'AWS::AccountId'
+              - ':server-certificate'
+              - /
+              - !Ref CertificateName
+      HealthCheck:
+          Target: 'TCP:9763'
+          HealthyThreshold: '3'
+          UnhealthyThreshold: '5'
+          Interval: '10'
+          Timeout: '5'
+    DependsOn:
+      - WSO2EIAnalyticsLoadBalancerSecurityGroup
   WSO2EIAnalyticsLoadBalancer:
     Type: 'AWS::ElasticLoadBalancing::LoadBalancer'
     Properties:
@@ -1118,6 +1631,15 @@ Outputs:
           - DNSName
         - '/carbon'
     Description: Analytics Management Console URL
+  MessageBrokerCarbonURL:
+    Value: !Join
+      - ''
+      - - 'https://'
+        - !GetAtt
+          - WSO2BrokerLoadBalancer
+          - DNSName
+        - '/carbon'
+    Description: Broker Management Console URL
 Parameters:
   AWSAccessKeyId:
     Type: String
