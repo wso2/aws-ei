@@ -638,7 +638,6 @@ Resources:
             - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
             - sleep 200
             - export FACTER_profile=ei_integrator${ProductVersion//.}
-            - echo "${ProductVersion} Test"
             - puppet agent -vt
             - 'if [ ! -d "/mnt/efs/deployment/server" ]; then'
             - '    mkdir -p /mnt/efs/deployment/server'
@@ -663,7 +662,6 @@ Resources:
             - apt-get install -y python3-pip
             - pip3 install boto3
             - echo "${WSO2EIEFSFileSystem}:/ /mnt/efs efs defaults,_netdev 0 0" >> /etc/fstab
-            - echo "${ProductVersion} Test"
             - !Sub "PRIVATE_IP=$(python3 /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIInstance2)"
             - !Join
               - ''
@@ -899,10 +897,10 @@ Parameters:
     Default: "echo"
   JDK:
     Type: String
-    Default: "Open_JDK8"
+    Default: "OPEN_JDK8"
     AllowedValues:
-      - "Open_JDK8"
-      - "Oracle_JDK8"
+      - "OPEN_JDK8"
+      - "ORACLE_JDK8"
   InternalPrepareForTest:
     Type: String
     Default: False
@@ -966,17 +964,17 @@ Parameters:
 Mappings:
   WSO2PuppetMasterRegionMap:
     ap-southeast-2:
-      Ubuntu1804: ami-05befe03a2a873518
+      Ubuntu1804: ami-0df1e237748af62b9
     eu-west-1:
-      Ubuntu1804: ami-0bfcf52bb38466950
+      Ubuntu1804: ami-024efef6c29aaffca
     us-east-1:
-      Ubuntu1804: ami-0d5ed479400b15807
+      Ubuntu1804: ami-0c8cc9e2f85674cfd
     us-east-2:
-      Ubuntu1804: ami-0a44443c5c5329638
+      Ubuntu1804: ami-00a3aa37574203b62
     us-west-1:
-      Ubuntu1804: ami-0569647b84d41a375
+      Ubuntu1804: ami-05ecb9e4249247732
     us-west-2:
-      Ubuntu1804: ami-063ca6931f4435d34
+      Ubuntu1804: ami-087566979d9b6a475
   WSO2EIAMIRegionMap:
     ap-southeast-2:
       Ubuntu1804: ami-07a3bd4944eb120a0
