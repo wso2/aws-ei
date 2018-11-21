@@ -564,7 +564,6 @@ Resources:
                   /g"
                   /usr/lib/wso2/wso2ei/${ProductVersion}/wso2ei-${ProductVersion}/conf/axis2/axis2.xml
             - /usr/lib/wso2/wso2ei/${ProductVersion}/wso2ei-${ProductVersion}/bin/integrator.sh start
-            - mkdir /usr/lib/wso2/wso2ei/${ProductVersion}/wso2ei-${ProductVersion}/mydir
             - ${CustomUserData}
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
