@@ -902,10 +902,10 @@ Parameters:
       - "ORACLE_JDK8"
   InternalPrepareForTest:
     Type: String
-    Default: False
+    Default: "False"
     AllowedValues:
-      - False
-      - True
+      - "False"
+      - "True"
   WUMPassword:
     Type: String
     Default: ""
