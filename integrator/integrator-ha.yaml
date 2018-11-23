@@ -370,7 +370,7 @@ Resources:
               - - export ProductVersion=
                 - !Ref ProductVersion
             - service puppetmaster restart
-            - !Sub "./home/ubuntu/ei-init.sh ${WUMUsername} ${WUMPassword}"
+            - !Sub "./home/ubuntu/wso2-init.sh ${WUMUsername} ${WUMPassword} wso2ei-${ProductVersion} ${InternalPrepareForTest}"
             - !Join
               - ''
               - - sed -i "s/access-key/
@@ -564,7 +564,6 @@ Resources:
                   /g"
                   /usr/lib/wso2/wso2ei/${ProductVersion}/wso2ei-${ProductVersion}/conf/axis2/axis2.xml
             - /usr/lib/wso2/wso2ei/${ProductVersion}/wso2ei-${ProductVersion}/bin/integrator.sh start
-            - mkdir /usr/lib/wso2/wso2ei/${ProductVersion}/wso2ei-${ProductVersion}/mydir
             - ${CustomUserData}
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
@@ -636,7 +635,7 @@ Resources:
             - service puppet restart
             - mkdir -p /mnt/efs
             - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
-            - sleep 200
+            - sleep 300
             - export FACTER_profile=ei_integrator${ProductVersion//.}
             - puppet agent -vt
             - 'if [ ! -d "/mnt/efs/deployment/server" ]; then'
@@ -964,17 +963,17 @@ Parameters:
 Mappings:
   WSO2PuppetMasterRegionMap:
     ap-southeast-2:
-      Ubuntu1804: ami-02148022ba42bf57c
+      Ubuntu1804: ami-04736a51961858ebf
     eu-west-1:
-      Ubuntu1804: ami-0eb6f72263e3a7343
+      Ubuntu1804: ami-0e83183b95e190afc
     us-east-1:
-      Ubuntu1804: ami-07d85d28eed1ecb20
+      Ubuntu1804: ami-0782bf8d5455e6ad0
     us-east-2:
-      Ubuntu1804: ami-0b3e8926de60d5a28
+      Ubuntu1804: ami-001ca894bac471a1b
     us-west-1:
-      Ubuntu1804: ami-0be3d1c2a20f79668
+      Ubuntu1804: ami-0089a017e2b6851a7
     us-west-2:
-      Ubuntu1804: ami-0c14a1a779549fba7
+      Ubuntu1804: ami-009d089713dae1887
   WSO2EIAMIRegionMap:
     ap-southeast-2:
       Ubuntu1804: ami-07a3bd4944eb120a0
