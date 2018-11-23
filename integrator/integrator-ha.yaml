@@ -529,6 +529,11 @@ Resources:
                 - !Ref ProductVersion
             - !Join
               - ''
+              - - sed -i "s/Product_Version/
+                - !Ref ProductVersion
+                - /g" /etc/filebeat/filebeat.yml
+            - !Join
+              - ''
               - - sed -i "s^ELASTICSEARCH_ENDPOINT^
                 - !Ref ElasticSearchEndpoint
                 - ^g" /etc/filebeat/filebeat.yml
@@ -649,6 +654,11 @@ Resources:
               - ''
               - - export ProductVersion=
                 - !Ref ProductVersion
+            - !Join
+              - ''
+              - - sed -i "s/Product_Version/
+                - !Ref ProductVersion
+                - /g" /etc/filebeat/filebeat.yml
             - !Join
               - ''
               - - sed -i "s^ELASTICSEARCH_ENDPOINT^
@@ -1000,14 +1010,14 @@ Mappings:
       Ubuntu1804: ami-009d089713dae1887
   WSO2EIAMIRegionMap:
     ap-southeast-2:
-      Ubuntu1804: ami-022549174964e916b
+      Ubuntu1804: ami-0a017892a7b655b0c
     eu-west-1:
-      Ubuntu1804: ami-0961894e19ce08142
+      Ubuntu1804: ami-041cdd4bb10bf55a9
     us-east-1:
-      Ubuntu1804: ami-0ccb4945e74d10fc5
+      Ubuntu1804: ami-0a000eeff453a3c0e
     us-east-2:
-      Ubuntu1804: ami-04b9a444e56fed93d
+      Ubuntu1804: ami-0a2ed85fc335a1ca0
     us-west-1:
-      Ubuntu1804: ami-06c2c5a11123363ed
+      Ubuntu1804: ami-0b8d72e3b63b802f9
     us-west-2:
-      Ubuntu1804: ami-0b6a55159dbc3b079
+      Ubuntu1804: ami-06623e0f8da384975
