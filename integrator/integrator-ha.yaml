@@ -592,7 +592,6 @@ Resources:
                   /g"
                   /usr/lib/wso2/wso2ei/${ProductVersion}/wso2ei-${ProductVersion}/conf/axis2/axis2.xml
             - /usr/lib/wso2/wso2ei/${ProductVersion}/wso2ei-${ProductVersion}/bin/integrator.sh start
-            - mkdir /usr/lib/wso2/wso2ei/${ProductVersion}/wso2ei-${ProductVersion}/mydir
             - ${CustomUserData}
             - echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
             - cat /dev/null > ~/.bash_history && history -c
@@ -684,7 +683,7 @@ Resources:
             - service puppet restart
             - mkdir -p /mnt/efs
             - !Sub "mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs"
-            - sleep 200
+            - sleep 300
             - export FACTER_profile=ei_integrator${ProductVersion//.}
             - puppet agent -vt
             - 'if [ ! -d "/mnt/efs/deployment/server" ]; then'
