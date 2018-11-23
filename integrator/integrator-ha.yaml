@@ -378,7 +378,7 @@ Resources:
               - - export ProductVersion=
                 - !Ref ProductVersion
             - service puppetmaster restart
-            - !Sub "./home/ubuntu/ei-init.sh ${WUMUsername} ${WUMPassword}"
+            - !Sub "./home/ubuntu/wso2-init.sh ${WUMUsername} ${WUMPassword} wso2ei-${ProductVersion} ${InternalPrepareForTest}"
             - !Join
               - ''
               - - sed -i "s/access-key/
