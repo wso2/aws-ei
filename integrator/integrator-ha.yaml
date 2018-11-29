@@ -456,7 +456,7 @@ Resources:
              - ''
              - - sed -i "s/JDK_TYPE/
                - !Ref JDK
-               - /g" /etc/puppet/code/environments/production/modules/ei_integrator${ProductVersion//.}/manifests/params.pp         
+               - /g" /etc/puppet/code/environments/production/modules/ei_integrator${ProductVersion//.}/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DB_USERNAME/
@@ -531,12 +531,22 @@ Resources:
               - ''
               - - sed -i "s/Product_Version/
                 - !Ref ProductVersion
-                - /g" /etc/filebeat/filebeat.yml
+                - /g" /home/ubuntu/logstash-6.5.1/logstash-sample.conf
+            - !Join
+              - ''
+              - - sed -i "s^secret-key^
+                - !Ref AWSAccessKeySecret
+                - ^g" /home/ubuntu/logstash-6.5.1/logstash-sample.conf
+            - !Join
+              - ''
+              - - sed -i "s/access-key/
+                - !Ref AWSAccessKeyId
+                - /g" /home/ubuntu/logstash-6.5.1/logstash-sample.conf
             - !Join
               - ''
               - - sed -i "s^ELASTICSEARCH_ENDPOINT^
                 - !Ref ElasticSearchEndpoint
-                - ^g" /etc/filebeat/filebeat.yml
+                - ^g" /home/ubuntu/logstash-6.5.1/logstash-sample.conf
             - !Sub "INSTANCEID=$(ec2metadata | grep -m 1 'instance-id:' | awk '{print $2}')"
             - !Join
               - ''
@@ -544,8 +554,22 @@ Resources:
                 - $INSTANCEID
                 - >-
                   /g"
-                  /etc/filebeat/filebeat.yml
-            - service filebeat start
+                  /home/ubuntu/logstash-6.5.1/logstash-sample.conf
+            - !Join
+              - ''
+              - - sed -i "s/STACK_NAME/
+                - !Ref "AWS::StackName"
+                - >-
+                  /g"
+                  /home/ubuntu/logstash-6.5.1/logstash-sample.conf
+            - !Join
+              - ''
+              - - sed -i "s/REGION_NAME/
+                - !Ref "AWS::Region"
+                - >-
+                  /g"
+                  /home/ubuntu/logstash-6.5.1/logstash-sample.conf
+            - nohup /home/ubuntu/logstash-6.5.1/bin/logstash -f /home/ubuntu/logstash-6.5.1/logstash-sample.conf &
             - sed -i '/\[main\]/a server=puppet' /etc/puppet/puppet.conf
             - !Join
               - ''
@@ -657,12 +681,22 @@ Resources:
               - ''
               - - sed -i "s/Product_Version/
                 - !Ref ProductVersion
-                - /g" /etc/filebeat/filebeat.yml
+                - /g" /home/ubuntu/logstash-6.5.1/logstash-sample.conf
+            - !Join
+              - ''
+              - - sed -i "s^secret-key^
+                - !Ref AWSAccessKeySecret
+                - ^g" /home/ubuntu/logstash-6.5.1/logstash-sample.conf
+            - !Join
+              - ''
+              - - sed -i "s/access-key/
+                - !Ref AWSAccessKeyId
+                - /g" /home/ubuntu/logstash-6.5.1/logstash-sample.conf
             - !Join
               - ''
               - - sed -i "s^ELASTICSEARCH_ENDPOINT^
                 - !Ref ElasticSearchEndpoint
-                - ^g" /etc/filebeat/filebeat.yml
+                - ^g" /home/ubuntu/logstash-6.5.1/logstash-sample.conf
             - !Sub "INSTANCEID=$(ec2metadata | grep -m 1 'instance-id:' | awk '{print $2}')"
             - !Join
               - ''
@@ -670,8 +704,22 @@ Resources:
                 - $INSTANCEID
                 - >-
                   /g"
-                  /etc/filebeat/filebeat.yml
-            - service filebeat start
+                  /home/ubuntu/logstash-6.5.1/logstash-sample.conf
+            - !Join
+              - ''
+              - - sed -i "s/STACK_NAME/
+                - !Ref "AWS::StackName"
+                - >-
+                  /g"
+                  /home/ubuntu/logstash-6.5.1/logstash-sample.conf
+            - !Join
+              - ''
+              - - sed -i "s/REGION_NAME/
+                - !Ref "AWS::Region"
+                - >-
+                  /g"
+                  /home/ubuntu/logstash-6.5.1/logstash-sample.conf
+            - nohup /home/ubuntu/logstash-6.5.1/bin/logstash -f /home/ubuntu/logstash-6.5.1/logstash-sample.conf &
             - sed -i '/\[main\]/a server=puppet' /etc/puppet/puppet.conf
             - !Join
               - ''
@@ -992,7 +1040,7 @@ Parameters:
       - 6.4.0
       - 6.1.1
       - 6.1.0
-      - 6.0.0            
+      - 6.0.0
 Mappings:
   WSO2PuppetMasterRegionMap:
     ap-southeast-2:
@@ -1009,14 +1057,15 @@ Mappings:
       Ubuntu1804: ami-009d089713dae1887
   WSO2EIAMIRegionMap:
     ap-southeast-2:
-      Ubuntu1804: ami-0a017892a7b655b0c
+      Ubuntu1804: ami-01efc89b1e9c78f2f
     eu-west-1:
-      Ubuntu1804: ami-041cdd4bb10bf55a9
+      Ubuntu1804: ami-0ef71f25fc5be6405
     us-east-1:
-      Ubuntu1804: ami-0a000eeff453a3c0e
+      Ubuntu1804: ami-071d17aa9be89c661
     us-east-2:
-      Ubuntu1804: ami-0a2ed85fc335a1ca0
+      Ubuntu1804: ami-073d3f02074c007e5
     us-west-1:
-      Ubuntu1804: ami-0b8d72e3b63b802f9
+      Ubuntu1804: ami-01b4bf9be7d1fb0be
     us-west-2:
-      Ubuntu1804: ami-06623e0f8da384975
+      Ubuntu1804: ami-09362e707f785f606
+
