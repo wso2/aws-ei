@@ -26,7 +26,6 @@ Metadata:
           - KeyPairName
           - WSO2InstanceType
           - OperatingSystem
-          - ProductVersion
       - Label:
           default: Network Configuration
         Parameters:
@@ -84,8 +83,6 @@ Metadata:
         default: DB Engine
       OperatingSystem:
         default: OS Version
-      ProductVersion:
-        default: EI Version
 Resources:
   # networking configurations
   WSO2EIVPC:
@@ -861,13 +858,6 @@ Parameters:
   LogArchiveS3Bucket:
     Type: String
     Default: ""
-  ProductVersion:
-    Type: String
-    Default: 6.4.0
-    AllowedValues:
-      - 6.4.0
-      - 6.1.1
-      - 6.1.0
 Mappings:
   WSO2PuppetMasterRegionMap:
     ap-southeast-2:
