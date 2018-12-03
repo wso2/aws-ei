@@ -371,7 +371,8 @@ Resources:
           sed -i '/\[master\]/a autosign=true' /etc/puppet/puppet.conf
           export ProductVersion=6.4.0
           service puppetmaster restart
-          ./home/ubuntu/wso2-init.sh ${WUMUsername} ${WUMPassword} wso2ei-640 ${InternalPrepareForTest}
+          pushd /home/ubuntu
+          ./wso2-init.sh ${WUMUsername} ${WUMPassword} wso2ei-6.4.0 ${InternalPrepareForTest}
           sed -i "s/access-key/${AWSAccessKeyId}/g" /etc/puppet/code/environments/production/modules/ei_integrator640/manifests/params.pp
           sed -i "s/REGION_NAME/${AWS::Region}/g" /etc/puppet/code/environments/production/modules/ei_integrator640/manifests/params.pp
           sed -i "s/CF_ELB_DNS_NAME/${WSO2EILoadBalancer.DNSName}/g" /etc/puppet/code/environments/production/modules/ei_integrator640/manifests/params.pp
