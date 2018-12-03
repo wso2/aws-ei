@@ -371,7 +371,8 @@ Resources:
           sed -i '/\[master\]/a autosign=true' /etc/puppet/puppet.conf
           export ProductVersion=6.4.0
           service puppetmaster restart
-          ./home/ubuntu/wso2-init.sh ${WUMUsername} ${WUMPassword} wso2ei-640 ${InternalPrepareForTest}
+          pushd /home/ubuntu
+          ./wso2-init.sh ${WUMUsername} ${WUMPassword} wso2ei-6.4.0 ${InternalPrepareForTest}
           sed -i "s/access-key/${AWSAccessKeyId}/g" /etc/puppet/code/environments/production/modules/ei_integrator640/manifests/params.pp
           sed -i "s/REGION_NAME/${AWS::Region}/g" /etc/puppet/code/environments/production/modules/ei_integrator640/manifests/params.pp
           sed -i "s/CF_ELB_DNS_NAME/${WSO2EILoadBalancer.DNSName}/g" /etc/puppet/code/environments/production/modules/ei_integrator640/manifests/params.pp
@@ -471,6 +472,7 @@ Resources:
               wget --delete-after --server-response --no-check-certificate "https://localhost:9443/carbon/admin/login.jsp"
               if [ $? -eq "0" ] ; then
                 /usr/local/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WSO2EINode1AutoScalingGroup --region ${AWS::Region}
+                break
               fi
           done
           echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
@@ -578,6 +580,7 @@ Resources:
               wget --delete-after --server-response --no-check-certificate "https://localhost:9443/carbon/admin/login.jsp"
               if [ $? -eq "0" ] ; then
                 /usr/local/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WSO2EINode2AutoScalingGroup --region ${AWS::Region}
+                break
               fi
           done
           ${CustomUserData}
@@ -885,4 +888,3 @@ Mappings:
       Ubuntu1804: ami-01b4bf9be7d1fb0be
     us-west-2:
       Ubuntu1804: ami-09362e707f785f606
-
