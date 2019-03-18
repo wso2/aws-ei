@@ -14,7 +14,7 @@
 
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  WSO2 Enterprise Integrator Clustered deployment
+  WSO2 Enterprise Integrator Clustered deployment with Message Broker and Analytics Configured
 Metadata:
   'AWS::CloudFormation::Interface':
     ParameterGroups:
