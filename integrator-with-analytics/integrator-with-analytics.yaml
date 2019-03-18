@@ -206,7 +206,7 @@ Resources:
           CidrIp: 0.0.0.0/0
   WSO2EIDBInstance:
     Type: 'AWS::RDS::DBInstance'
-    DeletionPolicy: Delete
+    DeletionPolicy: Snapshot
     Properties:
       VPCSecurityGroups:
         - !Ref WSO2EIDBInstanceSecurityGroup
@@ -712,13 +712,13 @@ Resources:
               apt-get update
               apt install -y puppet nfs-common
               apt install -y python-pip
-              apt install -y python3-pip
-              pip3 install boto3
+              pip install boto3
               sed -i '/\[main\]/a server=puppet' /etc/puppet/puppet.conf
           fi
           if [[ ${OperatingSystem} == "CentOS7" ]]; then
               yum install -y epel-release zip unzip nfs-utils
               yum install -y python-pip
+              pip install boto3
               rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
               yum install -y puppet-agent
               echo $'[main]\nserver = puppet\ncertname = agent1\nenvironment = production\n\runinterval = 1h' > /etc/puppetlabs/puppet/puppet.conf
@@ -765,7 +765,7 @@ Resources:
           ln -s /mnt/efs/tenants /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/tenants
           echo "${WSO2EIEFSFileSystem}:/ /mnt/efs efs defaults,_netdev 0 0" >> /etc/fstab
           sleep 30
-          export ANALYTICS_IP=$(python3 /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIAnalyticsWorker)
+          export ANALYTICS_IP=$(python /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIAnalyticsWorker)
           sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/deployment/server/eventpublishers/MessageFlowConfigurationPublisher.xml
           sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/deployment/server/eventpublishers/MessageFlowStatisticsPublisher.xml
           /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/bin/integrator.sh start
@@ -880,13 +880,13 @@ Resources:
               apt-get update
               apt install -y puppet nfs-common
               apt install -y python-pip
-              apt install -y python3-pip
-              pip3 install boto3
+              pip install boto3
               sed -i '/\[main\]/a server=puppet' /etc/puppet/puppet.conf
           fi
           if [[ ${OperatingSystem} == "CentOS7" ]]; then
               yum install -y epel-release zip unzip nfs-utils
               yum install -y python-pip
+              pip install boto3
               rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
               yum install -y puppet-agent
               echo $'[main]\nserver = puppet\ncertname = agent2\nenvironment = production\n\runinterval = 1h' > /etc/puppetlabs/puppet/puppet.conf
@@ -933,7 +933,7 @@ Resources:
           ln -s /mnt/efs/tenants /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/tenants
           echo "${WSO2EIEFSFileSystem}:/ /mnt/efs efs defaults,_netdev 0 0" >> /etc/fstab
           sleep 30
-          export ANALYTICS_IP=$(python3 /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIAnalyticsWorker)
+          export ANALYTICS_IP=$(python /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIAnalyticsWorker)
           sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/deployment/server/eventpublishers/MessageFlowConfigurationPublisher.xml
           sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/deployment/server/eventpublishers/MessageFlowStatisticsPublisher.xml
           /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/bin/integrator.sh start

@@ -206,7 +206,7 @@ Resources:
           CidrIp: 0.0.0.0/0
   WSO2EIDBInstance:
     Type: 'AWS::RDS::DBInstance'
-    DeletionPolicy: Delete
+    DeletionPolicy: Snapshot
     Properties:
       VPCSecurityGroups:
         - !Ref WSO2EIDBInstanceSecurityGroup
@@ -806,13 +806,13 @@ Resources:
               apt-get update
               apt install -y puppet nfs-common
               apt install -y python-pip
-              apt install -y python3-pip
-              pip3 install boto3
+              pip install boto3
               sed -i '/\[main\]/a server=puppet' /etc/puppet/puppet.conf
           fi
           if [[ ${OperatingSystem} == "CentOS7" ]]; then
               yum install -y epel-release zip unzip nfs-utils
               yum install -y python-pip
+              pip install boto3
               rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
               yum install -y puppet-agent
               echo $'[main]\nserver = puppet\ncertname = agent1\nenvironment = production\n\runinterval = 1h' > /etc/puppetlabs/puppet/puppet.conf
@@ -859,7 +859,7 @@ Resources:
           ln -s /mnt/efs/tenants /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/tenants
           echo "${WSO2EIEFSFileSystem}:/ /mnt/efs efs defaults,_netdev 0 0" >> /etc/fstab
           sleep 30
-          export ANALYTICS_IP=$(python3 /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIAnalyticsWorker)
+          export ANALYTICS_IP=$(python /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIAnalyticsWorker)
           sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/deployment/server/eventpublishers/MessageFlowConfigurationPublisher.xml
           sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/deployment/server/eventpublishers/MessageFlowStatisticsPublisher.xml
           cp /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/wso2/broker/client-lib/andes-client-*.jar /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/lib/
@@ -977,13 +977,13 @@ Resources:
               apt-get update
               apt install -y puppet nfs-common
               apt install -y python-pip
-              apt install -y python3-pip
-              pip3 install boto3
+              pip install boto3
               sed -i '/\[main\]/a server=puppet' /etc/puppet/puppet.conf
           fi
           if [[ ${OperatingSystem} == "CentOS7" ]]; then
               yum install -y epel-release zip unzip nfs-utils
               yum install -y python-pip
+              pip install boto3
               rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
               yum install -y puppet-agent
               echo $'[main]\nserver = puppet\ncertname = agent2\nenvironment = production\n\runinterval = 1h' > /etc/puppetlabs/puppet/puppet.conf
@@ -1030,7 +1030,7 @@ Resources:
           ln -s /mnt/efs/tenants /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/tenants
           echo "${WSO2EIEFSFileSystem}:/ /mnt/efs efs defaults,_netdev 0 0" >> /etc/fstab
           sleep 30
-          export ANALYTICS_IP=$(python3 /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIAnalyticsWorker)
+          export ANALYTICS_IP=$(python /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIAnalyticsWorker)
           sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/deployment/server/eventpublishers/MessageFlowConfigurationPublisher.xml
           sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/repository/deployment/server/eventpublishers/MessageFlowStatisticsPublisher.xml
           cp /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/wso2/broker/client-lib/andes-client-*.jar /usr/lib/wso2/wso2ei/6.4.0/wso2ei-6.4.0/lib/
@@ -1760,9 +1760,10 @@ Resources:
           fi
           if [[ ${OperatingSystem} == "CentOS7" ]]; then
               yum install -y epel-release zip unzip nfs-utils
-              yum install -y python-pip
+              yum install -y python3-pip
               rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
               yum install -y puppet-agent
+              pip3 install boto3
               echo $'[main]\nserver = puppet\ncertname = agent5\nenvironment = production\n\runinterval = 1h' > /etc/puppetlabs/puppet/puppet.conf
           fi
           pip install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
@@ -1785,7 +1786,7 @@ Resources:
           service puppet restart
           mkdir -p /mnt/efs
           mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs
-          sleep 300
+          sleep 200
           export FACTER_profile=ei_broker
           if [[ ${OperatingSystem} == "Ubuntu1804" ]]; then
               puppet agent -vt >> /var/log/puppetlog.log
@@ -1926,7 +1927,8 @@ Resources:
           fi
           if [[ ${OperatingSystem} == "CentOS7" ]]; then
               yum install -y epel-release zip unzip nfs-utils
-              yum install -y python-pip
+              yum install -y python3-pip
+              pip3 install boto3
               rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
               yum install -y puppet-agent
               echo $'[main]\nserver = puppet\ncertname = agent6\nenvironment = production\n\runinterval = 1h' > /etc/puppetlabs/puppet/puppet.conf
@@ -1951,7 +1953,7 @@ Resources:
           service puppet restart
           mkdir -p /mnt/efs
           mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs
-          sleep 300
+          sleep 350
           export FACTER_profile=ei_broker
           if [[ ${OperatingSystem} == "Ubuntu1804" ]]; then
               puppet agent -vt >> /var/log/puppetlog.log
@@ -2433,17 +2435,17 @@ Parameters:
 Mappings:
   WSO2PuppetMasterRegionMap:
     ap-southeast-2:
-      Ubuntu1804: ami-09b6ef7eca39d8bf5
+      Ubuntu1804: ami-0f078799c09f4eb7c
     eu-west-1:
-      Ubuntu1804: ami-05b93f59bd2dd73ef
+      Ubuntu1804: ami-0a2ccaaa4f8003199
     us-east-1:
-      Ubuntu1804: ami-07ec3a3fd362ac9aa
+      Ubuntu1804: ami-0e8cd8b8e993a8f1b
     us-east-2:
-      Ubuntu1804: ami-0d27c5154e237b18c
+      Ubuntu1804: ami-0eb8efe373003eea2
     us-west-1:
-      Ubuntu1804: ami-0a6934bbcc994f3f1
+      Ubuntu1804: ami-0ccf9258a1ec044fb
     us-west-2:
-      Ubuntu1804: ami-0d2f9f2f6694ec2b5
+      Ubuntu1804: ami-07324e6dacd3281ec
   WSO2EIAMIRegionMap:
     ap-southeast-2:
       CentOS7: ami-0211f0ecd0e693937
