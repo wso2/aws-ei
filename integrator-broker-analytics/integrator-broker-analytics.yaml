@@ -213,7 +213,7 @@ Resources:
       DBInstanceClass: !Ref DBInstanceType
       AllocatedStorage: !Ref DBAllocationStorage
       BackupRetentionPeriod: '0'
-      DBInstanceIdentifier: WSO2EIDBInstance
+      DBInstanceIdentifier: WSO2EIDBInstancetest1
       DBName: !If [UseSQLServerDB, "", WSO2EIDB]
       LicenseModel: !If [UseLicensedVersion, license-included, !Ref 'AWS::NoValue']
       EngineVersion: !Select [1, !Split ["_", !FindInMap [ DBEngineMap, !Ref DB, DBEngine]]]
@@ -1162,7 +1162,7 @@ Resources:
   WSO2EILoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: EI
+      Name: EItest1
       Scheme: internet-facing
       Subnets:
         - !Ref WSO2EIPublicSubnet1
@@ -1180,7 +1180,7 @@ Resources:
       HealthCheckPort: 9443
       Matcher:
         HttpCode: 200
-      Name: ei-carbon-9443
+      Name: ei-carbon-9443test1
       Port: 9443
       Protocol: HTTPS
       TargetGroupAttributes:
@@ -1205,7 +1205,7 @@ Resources:
       HealthCheckPort: 8243
       Matcher:
         HttpCode: 200
-      Name: ei-carbon-8243
+      Name: ei-carbon-8243test1
       Port: 8243
       Protocol: HTTPS
       TargetGroupAttributes:
@@ -1250,7 +1250,7 @@ Resources:
       HealthCheckPort: 8280
       Matcher:
         HttpCode: 200
-      Name: ei-carbon-8280
+      Name: ei-carbon-8280test1
       Port: 8280
       Protocol: HTTP
       TargetGroupAttributes:
@@ -1656,7 +1656,7 @@ Resources:
   WSO2EIAnalyticsLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: EI-Analytics
+      Name: EI-Analyticstest1
       Scheme: internet-facing
       Subnets:
         - !Ref WSO2EIPublicSubnet1
@@ -1674,7 +1674,7 @@ Resources:
       HealthCheckPort: 9443
       Matcher:
         HttpCode: 200
-      Name: ei-dashboard-9443
+      Name: ei-dashboard-9443test1
       Port: 9443
       Protocol: HTTPS
       TargetGroupAttributes:
@@ -2113,7 +2113,7 @@ Resources:
   WSO2BrokerLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: EI-Broker
+      Name: EI-Brokertest1
       Scheme: internet-facing
       Subnets:
         - !Ref WSO2EIPublicSubnet1
@@ -2131,7 +2131,7 @@ Resources:
       HealthCheckPort: 9443
       Matcher:
         HttpCode: 200
-      Name: ei-broker-9443
+      Name: ei-broker-9443test1
       Port: 9443
       Protocol: HTTPS
       TargetGroupAttributes:
@@ -2435,17 +2435,17 @@ Parameters:
 Mappings:
   WSO2PuppetMasterRegionMap:
     ap-southeast-2:
-      Ubuntu1804: ami-0f078799c09f4eb7c
+      Ubuntu1804: ami-04617d0c6fb64347e
     eu-west-1:
-      Ubuntu1804: ami-0a2ccaaa4f8003199
+      Ubuntu1804: ami-094ba2ed0f1c5b9d0
     us-east-1:
       Ubuntu1804: ami-017bb6968f2172b8c
     us-east-2:
-      Ubuntu1804: ami-0eb8efe373003eea2
+      Ubuntu1804: ami-0e572e1050afd652f
     us-west-1:
-      Ubuntu1804: ami-0ccf9258a1ec044fb
+      Ubuntu1804: ami-0446e0ef1de70a7e8
     us-west-2:
-      Ubuntu1804: ami-07324e6dacd3281ec
+      Ubuntu1804: ami-0797693f4ae0a065c
   WSO2EIAMIRegionMap:
     ap-southeast-2:
       CentOS7: ami-0211f0ecd0e693937
