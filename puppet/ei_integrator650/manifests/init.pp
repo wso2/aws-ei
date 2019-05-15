@@ -18,19 +18,6 @@
 # Init class of EI Integrator default profile
 class ei_integrator650 inherits ei_integrator650::params {
 
-  if $jdk_version == 'ORACLE_JDK8' {
-    $jdk_type = "jdk-8u144-linux-x64.tar.gz"
-    $jdk_path = "jdk1.8.0_144"
-  }
-  elsif $jdk_version == 'OPEN_JDK8' {
-    $jdk_type = "jdk-8u192-ea-bin-b02-linux-x64-19_jul_2018.tar.gz"
-    $jdk_path = "jdk1.8.0_192"
-  }
-  elsif $jdk_version == 'Corretto_JDK8' {
-    $jdk_type = "amazon-corretto-8.202.08.2-linux-x64.tar.gz"
-    $jdk_path = "amazon-corretto-8.202.08.2-linux-x64"
-  }
-
   # Create wso2 group
   group { $user_group:
     ensure => present,
@@ -68,6 +55,7 @@ class ei_integrator650 inherits ei_integrator650::params {
 
   # Create distribution path
   file { [  "${products_dir}",
+    "${products_dir}/${product}",
     "${products_dir}/${product}/${profile}" ]:
     ensure => 'directory',
   }
