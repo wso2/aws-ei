@@ -46,7 +46,7 @@ class ei_analytics_dashboard650 inherits ei_analytics_dashboard650::params {
   # Copy JDK to Java distribution path
   file { "jdk-distribution":
     path   => "${java_home}.tar.gz",
-    source => "puppet:///modules/installers/${jdk_name}.tar.gz",
+    source => "puppet:///modules/installers/${jdk_type}.tar.gz",
   }
 
   # Unzip distribution
@@ -83,7 +83,7 @@ class ei_analytics_dashboard650 inherits ei_analytics_dashboard650::params {
     owner  => $user,
     group  => $user_group,
     mode   => '0644',
-    source => "puppet:///modules/installers/${product_binary}",
+    source => "puppet:///modules/ei_analytics_dashboard650/${product_binary}",
   }
 
   # Stop the existing setup
@@ -137,15 +137,6 @@ class ei_analytics_dashboard650 inherits ei_analytics_dashboard650::params {
     group   => $user_group,
     mode    => '0754',
     content => template("${module_name}/carbon-home/${start_script_template}.erb")
-  }
-
-  # Copy the unit file required to deploy the server as a service
-  file { "/etc/systemd/system/${service_name}.service":
-    ensure  => present,
-    owner   => root,
-    group   => root,
-    mode    => '0754',
-    content => template("${module_name}/${service_name}.service.erb"),
   }
 
   /*

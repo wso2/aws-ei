@@ -41,7 +41,7 @@ class ei_integrator650_master::params {
   $service_name = "${product}-${profile}"
   $ei_analytics = 'CF_ANALYTICS_IP'
   $mediation_flow_statistics = 'false'
-  $broker_elb_dns_name  = 'BROKER_ELB_DNS_NAME'
+  $broker_elb_dns_name = 'BROKER_ELB_DNS_NAME'
   $ei_package = 'wso2ei-6.4.0.zip'
 
   # Define the template
@@ -79,7 +79,8 @@ class ei_integrator650_master::params {
   } elsif $db_managment_system == 'sqlserver-se' {
     $reg_db_user_name = 'CF_DB_USERNAME'
     $um_db_user_name = 'CF_DB_USERNAME'
-    $wso2_reg_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2EI_INTEGRATOR_GOV_DB;SendStringParametersAsUnicode=false'
+    $wso2_reg_db_url =
+      'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2EI_INTEGRATOR_GOV_DB;SendStringParametersAsUnicode=false'
     $wso2_um_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2EI_USER_DB;SendStringParametersAsUnicode=false'
     $db_driver_class_name = 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
     $db_connector = 'mssql-jdbc-7.0.0.jre8.jar'
@@ -110,42 +111,42 @@ class ei_integrator650_master::params {
     validation_query  => $db_validation_query,
   }
 
- # carbon.xml
- $security_keystore_location = '${carbon.home}/repository/resources/security/wso2carbon.jks'
- $security_keystore_type = 'JKS'
- $security_keystore_password = 'wso2carbon'
- $security_keystore_key_alias = 'wso2carbon'
- $security_keystore_key_password = 'wso2carbon'
+  # carbon.xml
+  $security_keystore_location = '${carbon.home}/repository/resources/security/wso2carbon.jks'
+  $security_keystore_type = 'JKS'
+  $security_keystore_password = 'wso2carbon'
+  $security_keystore_key_alias = 'wso2carbon'
+  $security_keystore_key_password = 'wso2carbon'
 
- $security_trust_store_location = '${carbon.home}/repository/resources/security/client-truststore.jks'
- $security_trust_store_type = 'JKS'
- $security_trust_store_password = 'wso2carbon'
+  $security_trust_store_location = '${carbon.home}/repository/resources/security/client-truststore.jks'
+  $security_trust_store_type = 'JKS'
+  $security_trust_store_password = 'wso2carbon'
 
- # axis2.xml
- $transport_receiver_keystore_location = 'repository/resources/security/wso2carbon.jks'
- $transport_receiver_keystore_type = 'JKS'
- $transport_receiver_keystore_password = 'wso2carbon'
- $transport_receiver_keystore_key_password = 'wso2carbon'
+  # axis2.xml
+  $transport_receiver_keystore_location = 'repository/resources/security/wso2carbon.jks'
+  $transport_receiver_keystore_type = 'JKS'
+  $transport_receiver_keystore_password = 'wso2carbon'
+  $transport_receiver_keystore_key_password = 'wso2carbon'
 
- $transport_receiver_trust_store_location = 'repository/resources/security/client-truststore.jks'
- $transport_receiver_trust_store_type = 'JKS'
- $transport_receiver_trust_store_password = 'wso2carbon'
+  $transport_receiver_trust_store_location = 'repository/resources/security/client-truststore.jks'
+  $transport_receiver_trust_store_type = 'JKS'
+  $transport_receiver_trust_store_password = 'wso2carbon'
 
- $transport_sender_keystore_location = 'repository/resources/security/wso2carbon.jks'
- $transport_sender_keystore_type = 'JKS'
- $transport_sender_keystore_password = 'wso2carbon'
- $transport_sender_keystore_key_password = 'wso2carbon'
+  $transport_sender_keystore_location = 'repository/resources/security/wso2carbon.jks'
+  $transport_sender_keystore_type = 'JKS'
+  $transport_sender_keystore_password = 'wso2carbon'
+  $transport_sender_keystore_key_password = 'wso2carbon'
 
- $transport_sender_trust_store_location = 'repository/resources/security/client-truststore.jks'
- $transport_sender_trust_store_type = 'JKS'
- $transport_sender_trust_store_password = 'wso2carbon'
+  $transport_sender_trust_store_location = 'repository/resources/security/client-truststore.jks'
+  $transport_sender_trust_store_type = 'JKS'
+  $transport_sender_trust_store_password = 'wso2carbon'
 
- $transport_sender_jms_provider_url_hostname = 'ACTIVEMQ_HOSTNAME'
- $transport_sender_rabbitmq_url_hostname = 'RABBITMQ_HOSTNAME'
+  $transport_sender_jms_provider_url_hostname = 'ACTIVEMQ_HOSTNAME'
+  $transport_sender_rabbitmq_url_hostname = 'RABBITMQ_HOSTNAME'
 
- # user-mgt.xml
- $admin_username = 'admin'
- $admin_password = 'admin'
+  # user-mgt.xml
+  $admin_username = 'admin'
+  $admin_password = 'admin'
 
   # Directories
   $products_dir = "/usr/local/wso2"

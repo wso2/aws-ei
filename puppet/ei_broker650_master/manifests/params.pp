@@ -110,7 +110,8 @@ class ei_broker650_master::params {
   } elsif $db_managment_system == 'sqlserver-se' {
     $reg_db_user_name = 'CF_DB_USERNAME'
     $um_db_user_name = 'CF_DB_USERNAME'
-    $wso2_reg_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2_CONFIG_GOV_DB;SendStringParametersAsUnicode=false'
+    $wso2_reg_db_url =
+      'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2_CONFIG_GOV_DB;SendStringParametersAsUnicode=false'
     $wso2_um_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2_USER_DB;SendStringParametersAsUnicode=false'
     $wso2_mb_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2_MB_DB;SendStringParametersAsUnicode=false'
     $mb_db_user_name = 'CF_DB_USERNAME'
@@ -167,4 +168,12 @@ class ei_broker650_master::params {
   # user-mgt.xml
   $admin_username = 'admin'
   $admin_password = 'admin'
+
+  # Directories
+  $products_dir = "/usr/local/wso2"
+
+  # Product and installation information
+  $product_binary = "${product}-${product_version}.zip"
+  $distribution_path = "${products_dir}/${product}/${profile}/${product_version}"
+  $install_path = "${distribution_path}/${product}-${product_version}"
 }

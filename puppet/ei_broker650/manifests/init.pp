@@ -79,7 +79,7 @@ class ei_broker650 inherits ei_broker650::params {
     owner  => $user,
     group  => $user_group,
     mode   => '0644',
-    source => "puppet:///modules/installers/${product_binary}",
+    source => "puppet:///modules/ei_broker650/${product_binary}",
   }
 
   # Stop the existing setup
@@ -135,21 +135,12 @@ class ei_broker650 inherits ei_broker650::params {
     content => template("${module_name}/carbon-home/${start_script_template}.erb")
   }
 
-  # Copy the unit file required to deploy the server as a service
-  file { "/etc/systemd/system/${service_name}.service":
-    ensure  => present,
-    owner   => root,
-    group   => root,
-    mode    => '0754',
-    content => template("${module_name}/${service_name}.service.erb"),
-  }
-
   # Add agent specific file configurations
- $config_file_list.each |$config_file| {
-   exec { "sed -i -e 's/${config_file['key']}/${config_file['value']}/g' ${config_file['file']}":
-     path => "/bin/",
-   }
- }
+  $config_file_list.each |$config_file| {
+    exec { "sed -i -e 's/${config_file['key']}/${config_file['value']}/g' ${config_file['file']}":
+      path => "/bin/",
+    }
+  }
 
   /*
     Following script can be used to copy file to a given location.

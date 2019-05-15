@@ -23,7 +23,7 @@ class ei_analytics_dashboard650::params {
   $product_version = '6.5.0'
   $profile = 'analytics-dashboard'
   $service_name = "${product}-${profile}"
-  $jdk_version='JDK_TYPE'
+  $jdk_version = 'JDK_TYPE'
 
   # JDK Distributions
   if $::osfamily == 'redhat' {
@@ -44,7 +44,7 @@ class ei_analytics_dashboard650::params {
     $jdk_path = "amazon-corretto-8.202.08.2-linux-x64"
   }
 
-  $java_home = "${lib_dir}/${jdk_name}"
+  $java_home = "${lib_dir}/${jdk_path}"
 
   # Define the template
   $start_script_template = 'wso2/analytics/wso2/dashboard/bin/carbon.sh'

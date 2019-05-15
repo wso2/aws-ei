@@ -68,7 +68,7 @@ class ei_integrator650 inherits ei_integrator650::params {
 
   # Create distribution path
   file { [  "${products_dir}",
-    "${products_dir}/${product}" ]:
+    "${products_dir}/${product}/${profile}" ]:
     ensure => 'directory',
   }
 
@@ -87,7 +87,7 @@ class ei_integrator650 inherits ei_integrator650::params {
     owner  => $user,
     group  => $user_group,
     mode   => '0644',
-    source => "puppet:///modules/installers/${product_binary}",
+    source => "puppet:///modules/ei_integrator650/${product_binary}",
   }
 
   # Stop the existing setup
@@ -143,24 +143,15 @@ class ei_integrator650 inherits ei_integrator650::params {
     content => template("${module_name}/carbon-home/${start_script_template}.erb")
   }
 
-  # Copy the Unit file required to deploy the server as a service
-  file { "/etc/systemd/system/${service_name}.service":
-    ensure  => present,
-    owner   => root,
-    group   => root,
-    mode    => '0754',
-    content => template("${module_name}/${service_name}.service.erb"),
+  # Add agent specific file configurations
+  $config_file_list.each |$config_file| {
+    exec { "sed -i -e 's/${config_file['key']}/${config_file['value']}/g' ${config_file['file']}":
+      path => "/bin/",
+    }
   }
 
-  # Add agent specific file configurations
-   $config_file_list.each |$config_file| {
-     exec { "sed -i -e 's/${config_file['key']}/${config_file['value']}/g' ${config_file['file']}":
-       path => "/bin/",
-     }
-   }
-
-  #  #  Copy groovy jar to the installed directory
- file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/dropins/groovy-all-2.2.0.jar":
+  #  Copy groovy jar to the installed directory
+  file { "${install_path}/dropins/groovy-all-2.2.0.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
@@ -168,15 +159,15 @@ class ei_integrator650 inherits ei_integrator650::params {
   }
 
   #  #  Copy customer 14.2-customJavaTaskToRunWithInterval-6.5.0.jar to the libs directory
-  file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/14.2-customJavaTaskToRunWithInterval-6.5.0.jar":
+  file { "${install_path}/lib/14.2-customJavaTaskToRunWithInterval-6.4.0.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
-    source => "puppet:///modules/installers/14.2-customJavaTaskToRunWithInterval-6.5.0.jar",
+    source => "puppet:///modules/installers/14.2-customJavaTaskToRunWithInterval-6.4.0.jar",
   }
 
   # Copy activeio-core jar to the installed directory for ActiveMQ integration
-  file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/activeio-core-3.1.4.jar":
+  file { "${install_path}/lib/activeio-core-3.1.4.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
@@ -184,7 +175,7 @@ class ei_integrator650 inherits ei_integrator650::params {
   }
 
   # Copy activemq-broker jar to the installed directory for ActiveMQ integration
-  file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/activemq-broker-5.15.8.jar":
+  file { "${install_path}/lib/activemq-broker-5.15.8.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
@@ -192,7 +183,7 @@ class ei_integrator650 inherits ei_integrator650::params {
   }
 
   # Copy activemq-client jar to the installed directory for ActiveMQ integration
-  file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/activemq-client-5.15.8.jar":
+  file { "${install_path}/lib/activemq-client-5.15.8.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
@@ -200,7 +191,7 @@ class ei_integrator650 inherits ei_integrator650::params {
   }
 
   # Copy activemq-kahadb-store jar to the installed directory for ActiveMQ integration
-  file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/activemq-kahadb-store-5.15.8.jar":
+  file { "${install_path}/lib/activemq-kahadb-store-5.15.8.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
@@ -208,7 +199,7 @@ class ei_integrator650 inherits ei_integrator650::params {
   }
 
   # Copy geronimo-j2ee-management_1.1_spec jar to the installed directory for ActiveMQ integration
-  file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar":
+  file { "${install_path}/lib/geronimo-j2ee-management_1.1_spec-1.0.1.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
@@ -216,7 +207,7 @@ class ei_integrator650 inherits ei_integrator650::params {
   }
 
   # Copy geronimo-jms_1.1_spec jar to the installed directory for ActiveMQ integration
-  file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/geronimo-jms_1.1_spec-1.1.1.jar":
+  file { "${install_path}/lib/geronimo-jms_1.1_spec-1.1.1.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
@@ -224,7 +215,7 @@ class ei_integrator650 inherits ei_integrator650::params {
   }
 
   # Copy geronimo-jta jar to the installed directory for ActiveMQ integration
-  file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/geronimo-jta_1.0.1B_spec-1.0.1.jar":
+  file { "${install_path}/lib/geronimo-jta_1.0.1B_spec-1.0.1.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
@@ -232,7 +223,7 @@ class ei_integrator650 inherits ei_integrator650::params {
   }
 
   # Copy hawtbuf jar to the installed directory for ActiveMQ integration
-  file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/hawtbuf-1.11.jar":
+  file { "${install_path}/lib/hawtbuf-1.11.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
@@ -240,20 +231,11 @@ class ei_integrator650 inherits ei_integrator650::params {
   }
 
   # Copy slf4j-api jar to the installed directory for ActiveMQ integration
-  file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/slf4j-api-1.7.25.jar":
+  file { "${install_path}/lib/slf4j-api-1.7.25.jar":
     owner  => $user,
     group  => $user_group,
     mode   => '0754',
     source => "puppet:///modules/installers/slf4j-api-1.7.25.jar",
-  }
-
-  # Copy the unit file required to deploy the server as a service
-  file { "/etc/systemd/system/${service_name}.service":
-    ensure  => present,
-    owner   => root,
-    group   => root,
-    mode    => '0754',
-    content => template("${module_name}/${service_name}.service.erb"),
   }
 
   /*
@@ -268,11 +250,11 @@ class ei_integrator650 inherits ei_integrator650::params {
   #   source => "puppet:///modules/${module_name}/some_file",
   # }
 
-    # Copy jacoco agent to the installed directory
-    file { "/usr/local/wso2/wso2ei/6.5.0/wso2ei-6.5.0/lib/jacocoagent.jar":
-      owner  => $user,
-      group  => $user_group,
-      mode   => '0754',
-      source => "puppet:///modules/installers/jacocoagent.jar",
-    }
+  # Copy jacoco agent to the installed directory
+  file { "${install_path}/lib/jacocoagent.jar":
+    owner  => $user,
+    group  => $user_group,
+    mode   => '0754',
+    source => "puppet:///modules/installers/jacocoagent.jar",
+  }
 }

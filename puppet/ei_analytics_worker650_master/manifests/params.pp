@@ -42,9 +42,6 @@ class ei_analytics_worker650_master::params {
 
   # -------------- Deployment.yaml Config -------------- #
 
-  # Carbon Configuration Parameters
-  $ports_offset = 0
-
   # transport.http config
   $default_listener_host = '0.0.0.0'
   $msf4j_host = '0.0.0.0'
@@ -107,10 +104,14 @@ class ei_analytics_worker650_master::params {
     $ei_carbon_db_username = 'CF_DB_USERNAME'
     $persistence_db_username = 'CF_DB_USERNAME'
     $metrics_db_username = 'CF_DB_USERNAME'
-    $ei_analytics_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=EI_ANALYTICS_DB;SendStringParametersAsUnicode=false'
-    $ei_carbon_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2_CARBON_DB;SendStringParametersAsUnicode=false'
-    $persistence_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2_PERSISTENCE_DB;SendStringParametersAsUnicode=false'
-    $metrics_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2_METRICS_DB;SendStringParametersAsUnicode=false'
+    $ei_analytics_db_url =
+      'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=EI_ANALYTICS_DB;SendStringParametersAsUnicode=false'
+    $ei_carbon_db_url =
+      'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2_CARBON_DB;SendStringParametersAsUnicode=false'
+    $persistence_db_url =
+      'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2_PERSISTENCE_DB;SendStringParametersAsUnicode=false'
+    $metrics_db_url =
+      'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=WSO2_METRICS_DB;SendStringParametersAsUnicode=false'
     $db_driver_class_name = 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
     $db_connector = 'mssql-jdbc-7.0.0.jre8.jar'
     $db_validation_query = 'SELECT 1'

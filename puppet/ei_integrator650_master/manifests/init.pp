@@ -80,20 +80,20 @@ class ei_integrator650_master inherits ei_integrator650_master::params {
   }
 
   # Copy database connector to the installed directory
-file { "${distribution_path}/${product}-${product_version}/lib/${db_connector}":
-  owner  => $user,
-  group  => $user_group,
-  mode   => '0754',
-  source => "puppet:///modules/installers/${db_connector}",
-}
+  file { "${distribution_path}/${product}-${product_version}/lib/${db_connector}":
+    owner  => $user,
+    group  => $user_group,
+    mode   => '0754',
+    source => "puppet:///modules/installers/${db_connector}",
+  }
 
-# Copy jacoco agent to the installed directory
-file { "${distribution_path}/${product}-${product_version}/lib/jacocoagent.jar":
-  owner  => $user,
-  group  => $user_group,
-  mode   => '0754',
-  source => "puppet:///modules/installers/jacocoagent.jar",
-}
+  # Copy jacoco agent to the installed directory
+  file { "${distribution_path}/${product}-${product_version}/lib/jacocoagent.jar":
+    owner  => $user,
+    group  => $user_group,
+    mode   => '0754',
+    source => "puppet:///modules/installers/jacocoagent.jar",
+  }
 
   /*
     Following script can be used to copy file to a given location.

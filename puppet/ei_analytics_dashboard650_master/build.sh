@@ -21,7 +21,7 @@
 
 # Build artifacts and versions
 : ${product:="wso2ei"}
-: ${profile:="integrator"}
+: ${profile:="analytics-dashboard"}
 : ${product_version:="6.5.0"}
 : ${products_dir:="/usr/local/wso2"}
 : ${distribution_path:=${products_dir}"/"${product}"/"${profile}"/"${product_version}}
@@ -30,7 +30,7 @@
 : ${puppet_env:="/etc/puppet/code/environments/production"}
 
 # Apply configurations
-export FACTER_profile=ei_integrator650_master
+export FACTER_profile=ei_analytics_dashboard650_master
 puppet agent -vt
 
 # exit immediately if a command exits with a non-zero status
@@ -44,7 +44,7 @@ copy_to_agent() {
   echo "Repackaging ${1} pack..."
   zip -qr ${product_binary} ${product}-${product_version}
   echo "Copying updated pack to Agent files directory..."
-  cp ${product_binary} ${puppet_env}/modules/ei_integrator650/files/
+  cp ${product_binary} ${puppet_env}/modules/ei_analytics_dashboard650/files/
 }
 
 # Check if user has a WSO2 subscription
@@ -143,7 +143,7 @@ then
 
   while read -r line; do
     filepath=${line##*${product}-${product_version}/}
-    template_file=${puppet_env}/modules/ei_integrator_master/templates/carbon-home/${filepath}.erb
+    template_file=${puppet_env}/modules/ei_analytics_dashboard_master/templates/carbon-home/${filepath}.erb
     if [[ -f ${template_file} ]]
     then
       updated_templates+=(${template_file})

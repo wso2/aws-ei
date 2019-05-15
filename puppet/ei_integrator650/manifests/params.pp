@@ -23,7 +23,8 @@ class ei_integrator650::params {
   $product_version = '6.5.0'
   $profile = 'integrator'
   $service_name = "${product}-${profile}"
-  $jdk_version='JDK_TYPE'
+  $jdk_version = 'JDK_TYPE'
+  $local_ip = $::ipaddress
 
   # JDK Distributions
   if $::osfamily == 'redhat' {
@@ -56,7 +57,7 @@ class ei_integrator650::params {
   $install_path = "${distribution_path}/${product}-${product_version}"
 
   # List of files that must contain agent specific configuraitons
- $config_file_list = [
-   { "file" => "${install_path}/conf/axis2/axis2.xml", "key" => "local_ip", "value" => "${local_ip}" },
- ]
+  $config_file_list = [
+    { "file" => "${install_path}/conf/axis2/axis2.xml", "key" => "local_ip", "value" => "${local_ip}" },
+  ]
 }

@@ -23,7 +23,7 @@ class ei_analytics_dashboard650_master::params {
   $product_version = '6.5.0'
   $profile = 'analytics-dashboard'
   $user_id = 802
-  $ports_offset = 0
+  $ports_offset = 2
   $user_home = '/home/$user'
   $user_group_id = 802
   $enable_test_mode = 'ENABLE_TEST_MODE'
@@ -39,9 +39,6 @@ class ei_analytics_dashboard650_master::params {
   $template_list = [
     'wso2/analytics/conf/dashboard/deployment.yaml'
   ]
-
-  # Carbon Configuration Parameters
-  $ports_offset = 2
 
   # Configuration used for the databridge communication
   $databridge_keystore = '${sys:carbon.home}/resources/security/wso2carbon.jks'
@@ -61,12 +58,14 @@ class ei_analytics_dashboard650_master::params {
   $securevault_master_key_reader_file = '${sys:carbon.home}/conf/${sys:wso2.runtime}/master-keys.yaml'
 
   # Data Sources Configuration
-  $business_rules_db_url = 'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/BUSINESS_RULES_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE'
+  $business_rules_db_url =
+    'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/BUSINESS_RULES_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE'
   $business_rules_db_username = 'wso2carbon'
   $business_rules_db_password = 'wso2carbon'
   $business_rules_db_driver = 'org.h2.Driver'
 
-  $status_dashboard_db_url = 'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/wso2_status_dashboard;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE'
+  $status_dashboard_db_url =
+    'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/wso2_status_dashboard;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE'
   $status_dashboard_db_username = 'wso2carbon'
   $status_dashboard_db_password = 'wso2carbon'
   $status_dashboard_db_driver = 'org.h2.Driver'
@@ -76,7 +75,8 @@ class ei_analytics_dashboard650_master::params {
   $metrics_db_password = 'wso2carbon'
   $metrics_db_driver = 'org.h2.Driver'
 
-  $permission_db_url = 'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/PERMISSION_DB;IFEXISTS=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE'
+  $permission_db_url =
+    'jdbc:h2:${sys:carbon.home}/wso2/${sys:wso2.runtime}/database/PERMISSION_DB;IFEXISTS=TRUE;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000;MVCC=TRUE'
   $permission_db_username = 'wso2carbon'
   $permission_db_password = 'wso2carbon'
   $permission_db_driver = 'org.h2.Driver'
@@ -102,7 +102,8 @@ class ei_analytics_dashboard650_master::params {
 
   } elsif $db_managment_system == 'sqlserver-se' {
     $ei_analytics_db_username = 'CF_DB_USERNAME'
-    $ei_analytics_db_url = 'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=EI_ANALYTICS_DB;SendStringParametersAsUnicode=false'
+    $ei_analytics_db_url =
+      'jdbc:sqlserver://CF_RDS_URL:1433;databaseName=EI_ANALYTICS_DB;SendStringParametersAsUnicode=false'
     $db_driver_class_name = 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
     $db_connector = 'mssql-jdbc-7.0.0.jre8.jar'
     $db_validation_query = 'SELECT 1'
