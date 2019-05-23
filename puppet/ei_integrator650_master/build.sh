@@ -47,29 +47,27 @@ copy_to_agent() {
   cp ${product_binary} ${puppet_env}/modules/ei_integrator650/files/
 }
 
-# Check if user has a WSO2 subscription
-while :
-do
-  read -p "Do you have a WSO2 subscription? (Y/n) "
-  echo
-  if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z "$REPLY" ]]
-  then
-    if [[ ! -f ${install_path}/bin/update_linux ]]
-    then
-      echo "Update executable not found. Please download package for subscription users from website."
-      exit 1
-    else
-      break
-    fi
-  elif [[ $REPLY =~ ^[Nn]$ ]]
-  then
-    copy_to_agent "modified"
-    exit 0
-  else
-    echo "Invalid input provided."
-    sleep .5
-  fi
+usage() { echo "Usage: $0 -u <username> -p <password>" 1>&2; exit 1; }
+
+while getopts ":u:p:" o; do
+    case "${o}" in
+        u)
+            username=${OPTARG}
+            ;;
+        p)
+            password=${OPTARG}
+            ;;
+        *)
+            usage
+            ;;
+    esac
 done
+shift $((OPTIND-1))
+
+if [ -z "${username}" ] && [ -z "${password}" ]; then
+    copy_to_agent "Modified"
+    exit 0
+fi
 
 # Create updates directory if it doesn't exist
 if [[ ! -d ${distribution_path}/updates ]]
@@ -94,11 +92,11 @@ cd ${install_path}/bin
 # Run in-place update
 if [[ ${status} -eq 0 ]] || [[ ${status} -eq 1 ]] || [[ ${status} -eq 2 ]]
 then
-  ./update_linux --verbose 2>&1 | tee ${install_path}/bin/output.txt
+  ./update_linux --username ${username} --password ${password} --verbose 2>&1 | tee ${install_path}/bin/output.txt
   update_status=${PIPESTATUS[0]}
 elif [[ ${status} -eq 3 ]]
 then
-  ./update_linux --verbose --continue 2>&1 | tee ${install_path}/bin/output.txt
+  ./update_linux --username ${username} --password ${password} --verbose --continue 2>&1 | tee ${install_path}/bin/output.txt
   update_status=${PIPESTATUS[0]}
 
   # Handle user running update script without resolving conflicts
@@ -143,7 +141,7 @@ then
 
   while read -r line; do
     filepath=${line##*${product}-${product_version}/}
-    template_file=${puppet_env}/modules/ei_integrator_master/templates/carbon-home/${filepath}.erb
+    template_file=${puppet_env}/modules/ei_integrator650_master/templates/carbon-home/${filepath}.erb
     if [[ -f ${template_file} ]]
     then
       updated_templates+=(${template_file})

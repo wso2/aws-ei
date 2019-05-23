@@ -42,7 +42,11 @@ class ei_integrator650_master::params {
   $ei_analytics = 'CF_ANALYTICS_IP'
   $mediation_flow_statistics = 'false'
   $broker_elb_dns_name = 'BROKER_ELB_DNS_NAME'
-  $ei_package = 'wso2ei-6.4.0.zip'
+  $ei_package = 'wso2ei-6.5.0.zip'
+
+  $analytics = {
+    sp_auth_server_url   => 'CF_ANALYTICS_IP',
+  }
 
   # Define the template
   $template_list = [
