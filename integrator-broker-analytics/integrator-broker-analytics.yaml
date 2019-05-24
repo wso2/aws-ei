@@ -895,6 +895,7 @@ Resources:
                   fi
               done
           fi
+          service puppet stop
           echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
           cat /dev/null > ~/.bash_history && history -c
     DependsOn:
@@ -1066,6 +1067,7 @@ Resources:
                   fi
               done
           fi
+          service puppet stop
           echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
           cat /dev/null > ~/.bash_history && history -c
     DependsOn:
