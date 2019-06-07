@@ -83,6 +83,40 @@ Metadata:
       ElasticSearchRegion:
         default: ElasticSearch Region
 Resources:
+  MonitoringInstanceIAMRole:
+    Type: AWS::IAM::Role
+    Description: IAM Instance role to read AWS resource to discover instances to monitor
+    Properties:
+      RoleName: MonitoringInstanceIAMRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ec2.amazonaws.com]
+            Action: sts:AssumeRole
+      Path: /
+  MonitoringInstanceIAMProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+        - Ref: MonitoringInstanceIAMRole
+  MonitoringInstanceIAMPolicy:
+    Type: AWS::IAM::Policy
+    DependsOn: MonitoringInstanceIAMRole
+    Description: Read AWS resources to discover instances to monitor
+    Properties:
+      PolicyName: MonitoringInstanceReadPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: '1'
+            Effect: Allow
+            Action:
+              - elasticloadbalancing:Describe*
+              - ec2:Describe*
+            Resource: "*"
+      Roles: [!Ref MonitoringInstanceIAMRole]
   # networking configurations
   WSO2EIVPC:
     Type: 'AWS::EC2::VPC'
@@ -265,11 +299,27 @@ Resources:
     Properties:
       VpcId: !Ref WSO2EIVPC
       GroupDescription: WSO2 Bastion node Security Group
+      GroupName: WSO2BastionSecurityGroup
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
           CidrIp: 0.0.0.0/0
+  MonitoringSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: !Ref WSO2EIVPC
+      GroupDescription: WSO2 Bastion node Security Group
+      GroupName: WSO2MonitoringSecurityGroup
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          SourceSecurityGroupId: !Ref BastionSecurityGroup
   WSO2EISecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -290,6 +340,10 @@ Resources:
           ToPort: 9200
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
+          FromPort: 9100
+          ToPort: 9100
+          SourceSecurityGroupId: !Ref MonitoringSecurityGroup
+        - IpProtocol: tcp
           FromPort: '8280'
           ToPort: '8280'
           SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
@@ -301,6 +355,10 @@ Resources:
           FromPort: '9443'
           ToPort: '9443'
           SourceSecurityGroupId: !Ref WSO2EILoadBalancerSecurityGroup
+        - IpProtocol: tcp
+          FromPort: '9443'
+          ToPort: '9443'
+          SourceSecurityGroupId: !Ref MonitoringSecurityGroup
         - IpProtocol: tcp
           FromPort: '8243'
           ToPort: '8243'
@@ -680,6 +738,7 @@ Resources:
         - !Ref 'AWS::Region'
         - !Ref OperatingSystem
       InstanceType: !Ref WSO2InstanceType
+      IamInstanceProfile: !Ref MonitoringInstanceIAMProfile
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
@@ -817,7 +876,7 @@ Resources:
       MinSize: 1
       MaxSize: 1
       TargetGroupARNs:
-        - !Ref WSO2EIALBTargetGroup
+        - !Ref WSO2EI9443ALBTargetGroup
         - !Ref WSO2EI8243ALBTargetGroup
         - !Ref WSO2EIServicesALBTargetGroup
       VPCZoneIdentifier:
@@ -828,6 +887,12 @@ Resources:
           PropagateAtLaunch: 'true'
         - Key: cluster
           Value: ei
+          PropagateAtLaunch: 'true'
+        - Key: Environment
+          Value: Dev
+          PropagateAtLaunch: 'true'
+        - Key: ServerType
+          Value: 'WSO2'
           PropagateAtLaunch: 'true'
     CreationPolicy:
       ResourceSignal:
@@ -851,6 +916,7 @@ Resources:
         - !Ref 'AWS::Region'
         - !Ref OperatingSystem
       InstanceType: !Ref WSO2InstanceType
+      IamInstanceProfile: !Ref MonitoringInstanceIAMProfile
       BlockDeviceMappings:
         - DeviceName: /dev/sda1
           Ebs:
@@ -988,7 +1054,7 @@ Resources:
       MinSize: 1
       MaxSize: 1
       TargetGroupARNs:
-        - !Ref WSO2EIALBTargetGroup
+        - !Ref WSO2EI9443ALBTargetGroup
         - !Ref WSO2EI8243ALBTargetGroup
         - !Ref WSO2EIServicesALBTargetGroup
       VPCZoneIdentifier:
@@ -999,6 +1065,12 @@ Resources:
           PropagateAtLaunch: 'true'
         - Key: cluster
           Value: ei
+          PropagateAtLaunch: 'true'
+        - Key: Environment
+          Value: Dev
+          PropagateAtLaunch: 'true'
+        - Key: ServerType
+          Value: 'WSO2'
           PropagateAtLaunch: 'true'
     CreationPolicy:
       ResourceSignal:
@@ -1079,7 +1151,7 @@ Resources:
         - !Ref WSO2EIPublicSubnet2
       SecurityGroups:
         - !Ref WSO2EILoadBalancerSecurityGroup
-  WSO2EIALBTargetGroup:
+  WSO2EI9443ALBTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       HealthCheckIntervalSeconds: 10
@@ -1183,12 +1255,12 @@ Resources:
       LoadBalancerArn: !Ref WSO2EILoadBalancer
       Port: 8280
       Protocol: HTTP
-  WSO2EIALBListener:
+  WSO2EI9443ALBListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       DefaultActions:
         - Type: forward
-          TargetGroupArn: !Ref WSO2EIALBTargetGroup
+          TargetGroupArn: !Ref WSO2EI9443ALBTargetGroup
       Certificates:
         - CertificateArn: !Join
           - ''
@@ -1251,6 +1323,70 @@ Resources:
           FromPort: '7712'
           ToPort: '7712'
           CidrIp: 0.0.0.0/0
+  MonitoringInstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      DisableApiTermination: 'false'
+      InstanceInitiatedShutdownBehavior: stop
+      ImageId: !FindInMap
+        - WSO2MonitorMasterAMIRegionMap
+        - !Ref 'AWS::Region'
+        - Ubuntu1804
+      InstanceType: !Ref MonitoringInstanceType
+      IamInstanceProfile: !Ref MonitoringInstanceIAMProfile
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: '50'
+            VolumeType: gp2
+            DeleteOnTermination: 'true'
+      KeyName: !Ref KeyPairName
+      Monitoring: 'false'
+      Tags:
+        - Key: Name
+          Value: WSO2MonitoringInstance
+      NetworkInterfaces:
+        - DeleteOnTermination: 'true'
+          AssociatePublicIpAddress: 'true'
+          Description: Primary network interface
+          DeviceIndex: 0
+          SubnetId: !Ref WSO2EIPublicSubnet1
+          GroupSet:
+            - !Ref MonitoringSecurityGroup
+      UserData: !Base64
+        'Fn::Sub': |
+          Content-Type: multipart/mixed; boundary="//"
+          MIME-Version: 1.0
+
+          --//
+          Content-Type: text/cloud-config; charset="us-ascii"
+          MIME-Version: 1.0
+          Content-Transfer-Encoding: 7bit
+          Content-Disposition: attachment; filename="cloud-config.txt"
+
+          #cloud-config
+          cloud_final_modules:
+          - [scripts-user, always]
+
+          --//
+          Content-Type: text/x-shellscript; charset="us-ascii"
+          MIME-Version: 1.0
+          Content-Transfer-Encoding: 7bit
+          Content-Disposition: attachment; filename="userdata.txt"
+          #!/bin/bash
+          exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+          export PATH=~/.local/bin:$PATH
+          export REGION=${AWS::Region}
+          sed -i "s/REGION_NAME/$REGION/g" /etc/prometheus/prometheus.yml
+          service prometheus restart
+          echo 'export HISTTIMEFORMAT="%F %T "' >> /etc/profile.d/history.sh
+          cat /dev/null > ~/.bash_history && history -c
+    DependsOn:
+      - WSO2EISecurityGroup
+      - WSO2EILoadBalancer
+      - WSO2EIVPCInternetGatewayAttachment
+      - WSO2EIDBInstance
+      - PuppetMaster
 # Analytics WORKER
   WSO2EIAnalyticsWorkerLaunchConfiguration:
     Type: 'AWS::AutoScaling::LaunchConfiguration'
@@ -1664,6 +1800,15 @@ Outputs:
           - DNSName
         - ':8243'
     Description: ESB HTTPSURL
+  MonitoringHttpUrl:
+    Value: !Join
+      - ''
+      - - 'http://'
+        - !GetAtt
+          - MonitoringInstance
+          - PublicDnsName
+        - ':3000/d/dxHncuHS/'
+    Description: Monitoring HTTP URL
   EIStackName:
     Value: !Ref AWS::StackName
     Description: Stack Name of the EI cluster
@@ -1697,6 +1842,9 @@ Parameters:
       - m3.2xlarge
       - m4.large
     ConstraintDescription: Must be a valid EC2 instance type
+  MonitoringInstanceType:
+    Type: String
+    Default: t2.large
   CustomUserData:
     Type: String
     Default: "echo"
@@ -1797,23 +1945,36 @@ Mappings:
       Ubuntu1804: ami-086840efee4e718e9
   WSO2EIAMIRegionMap:
     ap-southeast-2:
-      CentOS7: ami-0211f0ecd0e693937
-      Ubuntu1804: ami-0397f77b478a6a093
+      CentOS7: ami-01d73bdb3a728a26d
+      Ubuntu1804: ami-0829163a4c39d3304
     eu-west-1:
-      CentOS7: ami-08137d567f9e9413e
-      Ubuntu1804: ami-00f129b58dc8c4b2c
+      CentOS7: ami-0f51ca19f60e60eba
+      Ubuntu1804: ami-050b6a83093ff7e6f
     us-east-1:
-      CentOS7: ami-09d4e63ccc46083c7
-      Ubuntu1804: ami-0f130d12dbecb0880
+      CentOS7: ami-0fb2c4a3037d685da
+      Ubuntu1804: ami-09f144546aca6bdb4
     us-east-2:
-      CentOS7: ami-009ac95229cc07041
-      Ubuntu1804: ami-056b9d0b1c0a37336
+      CentOS7: ami-0f7ef44fbf4f4fff0
+      Ubuntu1804: ami-018581da66d131f90
     us-west-1:
-      CentOS7: ami-0062ecf9cd0c8417d
-      Ubuntu1804: ami-0d04a934f25f888ec
+      CentOS7: ami-06221f036350a2b23
+      Ubuntu1804: ami-0eadf94ff249cae5b
     us-west-2:
-      CentOS7: ami-0cbe0a37066de0538
-      Ubuntu1804: ami-053aa1934d13f000e
+      CentOS7: ami-0bb117a29addae3c0
+      Ubuntu1804: ami-03e1adf2440096fb9
+  WSO2MonitorMasterAMIRegionMap:
+    ap-southeast-2:
+      Ubuntu1804: ami-07db0bd7843431ecc
+    eu-west-1:
+      Ubuntu1804: ami-08c5f1ea8c1e595c5
+    us-east-1:
+      Ubuntu1804: ami-0ca663a3c8ebd88d3
+    us-east-2:
+      Ubuntu1804: ami-063864b50ccf81441
+    us-west-1:
+      Ubuntu1804: ami-0902b0e7f264e52e0
+    us-west-2:
+      Ubuntu1804: ami-009e0a594bc3acf10
   DBEngineMap:
     MySQL-5.7:
       DBEngine: "mysql_5.7"
