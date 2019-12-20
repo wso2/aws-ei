@@ -490,17 +490,17 @@ Resources:
               - ''
               - - sed -i "s/access-key/
                 - !Ref AWSAccessKeyId
-                - /g" /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/REGION_NAME/
                 - !Ref "AWS::Region"
-                - /g" /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s^secretkey^
                 - !Ref AWSAccessKeySecret
-                - ^g" /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                - ^g" /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_ELB_DNS_NAME/
@@ -509,88 +509,88 @@ Resources:
                   - DNSName
                 - >-
                   /g"
-                  /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                  /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DB_USERNAME/
                 - !Ref DBUsername
-                - /g" /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DB_PASSWORD/
                 - !Ref DBPassword
-                - /g" /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DBMS/
                 - !Select [0, !Split ["_", !FindInMap [ DBEngineMap, !Ref DB, DBEngine]]]
-                - /g" /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_RDS_URL/
                 - !GetAtt
                   - WSO2EIDBInstance
                   - Endpoint.Address
-                - /g" /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DB_USERNAME/
                 - !Ref DBUsername
-                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_worker650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_worker660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DB_PASSWORD/
                 - !Ref DBPassword
-                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_worker650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_worker660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DBMS/
                 - !Select [0, !Split ["_", !FindInMap [ DBEngineMap, !Ref DB, DBEngine]]]
-                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_worker650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_worker660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_RDS_URL/
                 - !GetAtt
                   - WSO2EIDBInstance
                   - Endpoint.Address
-                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_worker650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_worker660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DB_USERNAME/
                 - !Ref DBUsername
-                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_dashboard650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_dashboard660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DB_PASSWORD/
                 - !Ref DBPassword
-                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_dashboard650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_dashboard660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DBMS/
                 - !Select [0, !Split ["_", !FindInMap [ DBEngineMap, !Ref DB, DBEngine]]]
-                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_dashboard650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_dashboard660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_RDS_URL/
                 - !GetAtt
                   - WSO2EIDBInstance
                   - Endpoint.Address
-                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_dashboard650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_analytics_dashboard660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/BROKER_ELB_DNS_NAME/
                 - localhost
-                - /g" /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/ACTIVEMQ_HOSTNAME/
                 - localhost
-                - /g" /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/RABBITMQ_HOSTNAME/
                 - localhost
-                - /g" /etc/puppet/code/environments/production/modules/ei_integrator650_master/manifests/params.pp
+                - /g" /etc/puppet/code/environments/production/modules/ei_integrator660_master/manifests/params.pp
             - export DB_NAME=WSO2EIDB
             - !Join
               - ''
@@ -616,17 +616,17 @@ Resources:
              - ''
              - - sed -i "s/JDK_TYPE/
                - !Ref JDK
-               - /g" /etc/puppet/code/environments/production/modules/ei_analytics_dashboard650/manifests/params.pp
+               - /g" /etc/puppet/code/environments/production/modules/ei_analytics_dashboard660/manifests/params.pp
             - !Join
              - ''
              - - sed -i "s/JDK_TYPE/
                - !Ref JDK
-               - /g" /etc/puppet/code/environments/production/modules/ei_analytics_worker650/manifests/params.pp
+               - /g" /etc/puppet/code/environments/production/modules/ei_analytics_worker660/manifests/params.pp
             - !Join
              - ''
              - - sed -i "s/JDK_TYPE/
                - !Ref JDK
-               - /g" /etc/puppet/code/environments/production/modules/ei_integrator650/manifests/params.pp
+               - /g" /etc/puppet/code/environments/production/modules/ei_integrator660/manifests/params.pp
             - !Join
               - ''
               - - sed -i "s/CF_DB_USERNAME/
@@ -664,7 +664,7 @@ Resources:
             - !Join
               - ''
               - - sed -i "s/CF_PRODUCT_VERSION/
-                - 6.5.0
+                - 6.6.0
                 - /g" /usr/local/bin/provision_db_ei.sh
             - !Join
               - ''
@@ -703,15 +703,15 @@ Resources:
             - !Join
               - ''
               - - sed -i "s/CF_PRODUCT_VERSION/
-                - 6.5.0
+                - 6.6.0
                 - /g" /usr/local/bin/provision_db_ei-analytics.sh
             - bash /usr/local/bin/provision_db_ei.sh
             - bash /usr/local/bin/provision_db_ei-analytics.sh
             - cd /home/ubuntu
-            - !Sub "./wso2-init.sh '${WUMUsername}' '${WUMPassword}' wso2ei-6.5.0 ${InternalPrepareForTest} ei_integrator650_master"
+            - !Sub "./wso2-init.sh '${WUMUsername}' '${WUMPassword}' wso2ei-6.6.0 ${InternalPrepareForTest} ei_integrator660_master"
             - !Sub "/usr/local/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PuppetMaster --region ${AWS::Region}"
-            - !Sub "./wso2-init.sh '${WUMUsername}' '${WUMPassword}' wso2ei-6.5.0 ${InternalPrepareForTest} ei_analytics_worker650_master"
-            - !Sub "./wso2-init.sh '${WUMUsername}' '${WUMPassword}' wso2ei-6.5.0 ${InternalPrepareForTest} ei_analytics_dashboard650_master"
+            - !Sub "./wso2-init.sh '${WUMUsername}' '${WUMPassword}' wso2ei-6.6.0 ${InternalPrepareForTest} ei_analytics_worker660_master"
+            - !Sub "./wso2-init.sh '${WUMUsername}' '${WUMPassword}' wso2ei-6.6.0 ${InternalPrepareForTest} ei_analytics_dashboard660_master"
   PuppetMasterSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -793,8 +793,8 @@ Resources:
           wget --no-check-certificate --no-proxy 'http://wso2-cloudformation-templates.s3.amazonaws.com/logstash-ei.conf' -P /usr/lib/logstash-6.5.1/
           wget https://s3.amazonaws.com/wso2logarchiever/log_archiver/log_archiver.sh
           mv log_archiver.sh /usr/lib/
-          export ProductVersion=6.5.0
-          sed -i "s/Product_Version/6.5.0/g" /usr/lib/logstash-6.5.1/logstash-ei.conf
+          export ProductVersion=6.6.0
+          sed -i "s/Product_Version/6.6.0/g" /usr/lib/logstash-6.5.1/logstash-ei.conf
           sed -i "s^secret-key^${AWSAccessKeySecret}^g" /usr/lib/logstash-6.5.1/logstash-ei.conf
           sed -i "s/access-key/${AWSAccessKeyId}/g" /usr/lib/logstash-6.5.1/logstash-ei.conf
           sed -i "s^ELASTICSEARCH_ENDPOINT^${ElasticSearchEndpoint}^g" /usr/lib/logstash-6.5.1/logstash-ei.conf
@@ -809,7 +809,7 @@ Resources:
           mkdir -p /mnt/efs
           mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs
           sleep 100
-          export FACTER_profile=ei_integrator650
+          export FACTER_profile=ei_integrator660
           if [[ ${OperatingSystem} == "Ubuntu1804" ]]; then
               puppet agent -vt >> /var/log/puppetlog.log
           fi
@@ -818,23 +818,23 @@ Resources:
           fi
           if [ ! -d "/mnt/efs/deployment/server" ]; then
               mkdir -p /mnt/efs/deployment/server
-              cp -r /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/deployment/server /mnt/efs/deployment
+              cp -r /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/deployment/server /mnt/efs/deployment
           fi
-          rm -rf /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/deployment/server
-          ln -s /mnt/efs/deployment/server /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/deployment/server
+          rm -rf /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/deployment/server
+          ln -s /mnt/efs/deployment/server /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/deployment/server
           if [ ! -d "/mnt/efs/tenants" ]; then
               mkdir -p /mnt/efs/tenants
-              cp -r /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/tenants /mnt/efs
+              cp -r /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/tenants /mnt/efs
           fi
-          rm -rf /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/tenants
-          ln -s /mnt/efs/tenants /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/tenants
+          rm -rf /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/tenants
+          ln -s /mnt/efs/tenants /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/tenants
           echo "${WSO2EIEFSFileSystem}:/ /mnt/efs efs defaults,_netdev 0 0" >> /etc/fstab
           sleep 30
           export ANALYTICS_IP=$(python /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIAnalyticsWorker)
-          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/conf/carbon.xml
-          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/deployment/server/eventpublishers/MessageFlowConfigurationPublisher.xml
-          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/deployment/server/eventpublishers/MessageFlowStatisticsPublisher.xml
-          /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/bin/integrator.sh start
+          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/conf/carbon.xml
+          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/deployment/server/eventpublishers/MessageFlowConfigurationPublisher.xml
+          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/deployment/server/eventpublishers/MessageFlowStatisticsPublisher.xml
+          /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/bin/integrator.sh start
           ${CustomUserData}
           sleep 30
           if [[ ${OperatingSystem} == "Ubuntu1804" ]]; then
@@ -972,8 +972,8 @@ Resources:
           wget https://s3.amazonaws.com/wso2logarchiever/log_archiver/log_archiver.sh
           wget --no-check-certificate --no-proxy 'http://wso2-cloudformation-templates.s3.amazonaws.com/logstash-ei.conf' -P /usr/lib/logstash-6.5.1/
           mv log_archiver.sh /usr/lib/
-          export ProductVersion=6.5.0
-          sed -i "s/Product_Version/6.5.0/g" /usr/lib/logstash-6.5.1/logstash-ei.conf
+          export ProductVersion=6.6.0
+          sed -i "s/Product_Version/6.6.0/g" /usr/lib/logstash-6.5.1/logstash-ei.conf
           sed -i "s^secret-key^${AWSAccessKeySecret}^g" /usr/lib/logstash-6.5.1/logstash-ei.conf
           sed -i "s/access-key/${AWSAccessKeyId}/g" /usr/lib/logstash-6.5.1/logstash-ei.conf
           sed -i "s^ELASTICSEARCH_ENDPOINT^${ElasticSearchEndpoint}^g" /usr/lib/logstash-6.5.1/logstash-ei.conf
@@ -988,7 +988,7 @@ Resources:
           mkdir -p /mnt/efs
           mount -t nfs4 -o nfsvers=4.1 ${WSO2EIEFSFileSystem}.efs.${AWS::Region}.amazonaws.com:/ /mnt/efs
           sleep 300
-          export FACTER_profile=ei_integrator650
+          export FACTER_profile=ei_integrator660
           if [[ ${OperatingSystem} == "Ubuntu1804" ]]; then
               puppet agent -vt >> /var/log/puppetlog.log
           fi
@@ -997,23 +997,23 @@ Resources:
           fi
           if [ ! -d "/mnt/efs/deployment/server" ]; then
               mkdir -p /mnt/efs/deployment/server
-              cp -r /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/deployment/server /mnt/efs/deployment
+              cp -r /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/deployment/server /mnt/efs/deployment
           fi
-          rm -rf /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/deployment/server
-          ln -s /mnt/efs/deployment/server /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/deployment/server
+          rm -rf /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/deployment/server
+          ln -s /mnt/efs/deployment/server /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/deployment/server
           if [ ! -d "/mnt/efs/tenants" ]; then
               mkdir -p /mnt/efs/tenants
-              cp -r /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/tenants /mnt/efs
+              cp -r /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/tenants /mnt/efs
           fi
-          rm -rf /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/tenants
-          ln -s /mnt/efs/tenants /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/tenants
+          rm -rf /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/tenants
+          ln -s /mnt/efs/tenants /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/tenants
           echo "${WSO2EIEFSFileSystem}:/ /mnt/efs efs defaults,_netdev 0 0" >> /etc/fstab
           sleep 30
           export ANALYTICS_IP=$(python /usr/local/bin/private_ip_extractor.py ${AWS::Region} ${AWSAccessKeyId} ${AWSAccessKeySecret} WSO2EIAnalyticsWorker)
-          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/conf/carbon.xml
-          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/deployment/server/eventpublishers/MessageFlowConfigurationPublisher.xml
-          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/repository/deployment/server/eventpublishers/MessageFlowStatisticsPublisher.xml
-          /usr/local/wso2/wso2ei/integrator/6.5.0/wso2ei-6.5.0/bin/integrator.sh start
+          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/conf/carbon.xml
+          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/deployment/server/eventpublishers/MessageFlowConfigurationPublisher.xml
+          sed -i "s/CF_ANALYTICS_IP/$ANALYTICS_IP/g" /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/repository/deployment/server/eventpublishers/MessageFlowStatisticsPublisher.xml
+          /usr/local/wso2/wso2ei/integrator/6.6.0/wso2ei-6.6.0/bin/integrator.sh start
           ${CustomUserData}
           sleep 30
           if [[ ${OperatingSystem} == "Ubuntu1804" ]]; then
@@ -1448,14 +1448,14 @@ Resources:
           export PuppetmasterIP=${PuppetMaster.PrivateIp}
           echo "$PuppetmasterIP puppet puppetmaster" >> /etc/hosts
           wget --no-check-certificate --no-proxy 'http://wso2-cloudformation-templates.s3.amazonaws.com/private_ip_extractor.py' -P /usr/local/bin/
-          export FACTER_profile=ei_analytics_worker650
+          export FACTER_profile=ei_analytics_worker660
           if [[ ${OperatingSystem} == "Ubuntu1804" ]]; then
               puppet agent -vt >> /var/log/puppetlog.log
           fi
           if [[ ${OperatingSystem} == "CentOS7" ]]; then
               /opt/puppetlabs/bin/puppet agent -vt >> /var/log/puppetlog.log
           fi
-          /usr/local/wso2/wso2ei/analytics-worker/6.5.0/wso2ei-6.5.0/wso2/analytics/wso2/worker/bin/carbon.sh start
+          /usr/local/wso2/wso2ei/analytics-worker/6.6.0/wso2ei-6.6.0/wso2/analytics/wso2/worker/bin/carbon.sh start
           if [[ ${OperatingSystem} == "Ubuntu1804" ]]; then
               /usr/local/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WSO2EIAnalyticsWorkerAutoScalingGroup --region ${AWS::Region}
           fi
@@ -1553,7 +1553,7 @@ Resources:
           wget --no-check-certificate --no-proxy 'http://wso2-cloudformation-templates.s3.amazonaws.com/private_ip_extractor.py' -P /usr/local/bin/
           export PuppetmasterIP=${PuppetMaster.PrivateIp}
           echo "$PuppetmasterIP puppet puppetmaster" >> /etc/hosts
-          export FACTER_profile=ei_analytics_dashboard650
+          export FACTER_profile=ei_analytics_dashboard660
           if [[ ${OperatingSystem} == "Ubuntu1804" ]]; then
               puppet agent -vt >> /var/log/puppetlog.log
           fi
@@ -1561,7 +1561,7 @@ Resources:
               /opt/puppetlabs/bin/puppet agent -vt >> /var/log/puppetlog.log
           fi
           sleep 30
-          /usr/local/wso2/wso2ei/analytics-dashboard/6.5.0/wso2ei-6.5.0/wso2/analytics/wso2/dashboard/bin/carbon.sh start
+          /usr/local/wso2/wso2ei/analytics-dashboard/6.6.0/wso2ei-6.6.0/wso2/analytics/wso2/dashboard/bin/carbon.sh start
           if [[ ${OperatingSystem} == "Ubuntu1804" ]]; then
               /usr/local/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WSO2EIAnalyticsDashboardAutoScalingGroup --region ${AWS::Region}
           fi
@@ -1856,13 +1856,14 @@ Parameters:
     Type: String
     Default: "OPEN_JDK8"
     AllowedValues:
+      - "OPEN_JDK11"
       - "OPEN_JDK8"
       - "CORRETTO_JDK8"
   ProductVersion:
     Type: String
-    Default: 6.5.0
+    Default: 6.6.0
     AllowedValues:
-      - 6.5.0
+      - 6.6.0
   InternalPrepareForTest:
     Type: String
     Default: "False"
