@@ -28,8 +28,6 @@ Metadata:
           - CertificateName
           - DBUsername
           - DBPassword
-          - WUMUsername
-          - WUMPassword
       - Label:
           default: Advanced Configuration
         Parameters:
@@ -68,10 +66,6 @@ Metadata:
         default: Enable Test Mode
       CustomUserData:
         default: Custom Userdata
-      WUMUsername:
-        default: WSO2 Username
-      WUMPassword:
-        default: WSO2 Password
       WSO2InstanceType:
         default: Instance Type
       DB:
@@ -485,7 +479,6 @@ Resources:
               - - export ProductVersion=
                 - !Ref ProductVersion
             - service puppetmaster restart
-            # - !Sub "/home/ubuntu/wso2-init.sh '${WUMUsername}' '${WUMPassword}' wso2ei-${ProductVersion} '${InternalPrepareForTest}'"
             - !Join
               - ''
               - - sed -i "s/access-key/
@@ -708,10 +701,10 @@ Resources:
             - bash /usr/local/bin/provision_db_ei.sh
             - bash /usr/local/bin/provision_db_ei-analytics.sh
             - cd /home/ubuntu
-            - !Sub "./wso2-init.sh '${WUMUsername}' '${WUMPassword}' wso2ei-6.6.0 ${InternalPrepareForTest} ei_integrator660_master"
+            - !Sub "./wso2-init.sh wso2ei-6.6.0 ei_integrator660_master"
             - !Sub "/usr/local/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource PuppetMaster --region ${AWS::Region}"
-            - !Sub "./wso2-init.sh '${WUMUsername}' '${WUMPassword}' wso2ei-6.6.0 ${InternalPrepareForTest} ei_analytics_worker660_master"
-            - !Sub "./wso2-init.sh '${WUMUsername}' '${WUMPassword}' wso2ei-6.6.0 ${InternalPrepareForTest} ei_analytics_dashboard660_master"
+            - !Sub "./wso2-init.sh wso2ei-6.6.0 ei_analytics_worker660_master"
+            - !Sub "./wso2-init.sh wso2ei-6.6.0 ei_analytics_dashboard660_master"
   PuppetMasterSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -1870,13 +1863,6 @@ Parameters:
     AllowedValues:
       - "False"
       - "True"
-  WUMPassword:
-    Type: String
-    Default: ""
-    NoEcho: true
-  WUMUsername:
-    Type: String
-    Default: ""
   DBUsername:
     Type: String
     MinLength: 4
@@ -1937,17 +1923,17 @@ Parameters:
 Mappings:
   WSO2PuppetMasterRegionMap:
     ap-southeast-2:
-      Ubuntu1804: ami-0176ba10290ebbba1
+      Ubuntu1804: ami-00faae5ad1a6859e9
     eu-west-1:
-      Ubuntu1804: ami-0d61fcba8fc55e431
+      Ubuntu1804: ami-0ae0b201d85d882c3
     us-east-1:
-      Ubuntu1804: ami-0ec10532c8d2e645c
+      Ubuntu1804: ami-085e9ea2c4d62536c
     us-east-2:
-      Ubuntu1804: ami-0995825a35c8a0674
+      Ubuntu1804: ami-0640a249fb9111fa9
     us-west-1:
-      Ubuntu1804: ami-0e1294ec78be7c5e7
+      Ubuntu1804: ami-03ab4970f7612bc7f
     us-west-2:
-      Ubuntu1804: ami-0f6edbb10de498ec0
+      Ubuntu1804: ami-0c1e8356baa659fb7
   WSO2EIAMIRegionMap:
     ap-southeast-2:
       CentOS7: ami-01d73bdb3a728a26d
