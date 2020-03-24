@@ -376,7 +376,7 @@ Resources:
             - sed -i '/\[main\]/a dns_alt_names=puppetmaster,puppet' /etc/puppet/puppet.conf
             - sed -i '/\[master\]/a autosign=true' /etc/puppet/puppet.conf
             - service puppetmaster restart
-            - wget https://wso2-cloudformation-templates.s3.amazonaws.com/wso2-init.sh
+            - wget -O wso2-init.sh https://wso2-cloudformation-templates.s3.amazonaws.com/wso2-init.sh
             - chmod +x wso2-init.sh
             - !Sub "./home/ubuntu/wso2-init.sh ${WUMUsername} ${WUMPassword} wso2ei-6.4.0 False"
             - !Join
