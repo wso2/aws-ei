@@ -1,0 +1,384 @@
+# Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: >-
+  WSO2 Enterprise Integrator Clustered deployment with Analytics Configured
+
+Metadata:
+  'AWS::CloudFormation::Interface':
+    ParameterGroups:
+      - Label:
+          default: Basic Configuration
+        Parameters:
+          - AWSAccessKeyId
+          - AWSAccessKeySecret
+          - KeyPairName
+          - CertificateName
+          - DBUsername
+          - DBPassword
+      - Label:
+          default: Advanced Configuration
+        Parameters:
+          - OperatingSystem
+          - WSO2InstanceType
+          - ProductVersion
+          - DB
+          - DBAllocationStorage
+          - DBInstanceType
+          - CustomUserData
+          - JDK
+          - InternalPrepareForTest
+          - ElasticSearchEndpoint
+          - ElasticSearchRegion
+          - PrivateSubnet1CIDR
+          - PrivateSubnet2CIDR
+          - PublicSubnet1CIDR
+          - PublicSubnet2CIDR
+          - VpcCIDR
+          - BastionInstanceType
+          - BastionOperatingSystem
+    ParameterLabels:
+      AWSAccessKeyId:
+        default: AWS Access Key
+      AWSAccessKeySecret:
+        default: AWS Access Secret Key
+      BastionInstanceType:
+        default: Instance Type for Bastion Instance
+      OperatingSystem:
+        default: Operating System
+      CertificateName:
+        default: SSL Certificate Name
+      KeyPairName:
+        default: Key Pair Name
+      DBUsername:
+        default: Database Username
+      DBPassword:
+        default: Database Password
+      DBAllocationStorage:
+        default: Allocation Storage
+      DBInstanceType:
+        default: Database Instance Type
+      JDK:
+        default: JDK
+      InternalPrepareForTest:
+        default: Enable Test Mode
+      BastionOperatingSystem:
+        default: Operating System for Bastion Instance
+      EnvironmentName:
+        default: Environment Name
+      CustomUserData:
+        default: Custom Userdata
+      WSO2InstanceType:
+        default: Instance Type
+      DB:
+        default: Database
+      ProductVersion:
+        default: EI Version
+      ElasticSearchEndpoint:
+        default: ElasticSearch Endpoint
+      ElasticSearchRegion:
+        default: ElasticSearch Region
+      PrivateSubnet1CIDR:
+        default: Private Subnet 1 CIDR
+      PrivateSubnet2CIDR:
+        default: Private Subnet 2 CIDR
+      PublicSubnet1CIDR:
+        default: Public Subnet 1 CIDR
+      PublicSubnet2CIDR:
+        default: Public Subnet 2 CIDR
+      VpcCIDR:
+        default: VPC CIDR
+
+Parameters:
+  AWSAccessKeyId:
+    Type: String
+  AWSAccessKeySecret:
+    Type: String
+  BastionInstanceType:
+    Description: Instance Type for the Bastion Instance
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+      - t2.medium
+      - t2.large
+    ConstraintDescription: Must be a valid EC2 instance type
+  KeyPairName:
+    Description: >-
+      The private key used to log in to instances through SSH
+    Type: 'AWS::EC2::KeyPair::KeyName'
+  CertificateName:
+    Description: A valid SSL certificate used for HTTPS
+    Type: String
+    MinLength: 1
+  WSO2InstanceType:
+    Type: String
+    Default: t2.medium
+    AllowedValues:
+      - t2.medium
+      - t2.large
+      - t2.xlarge
+      - t2.2xlarge
+      - m3.medium
+      - m3.large
+      - m3.xlarge
+      - m3.2xlarge
+      - m4.large
+    ConstraintDescription: Must be a valid EC2 instance type
+  MonitoringInstanceType:
+    Type: String
+    Default: t2.large
+  CustomUserData:
+    Type: String
+    Default: "echo"
+  JDK:
+    Type: String
+    Default: "OPEN_JDK8"
+    AllowedValues:
+      - "OPEN_JDK11"
+      - "OPEN_JDK8"
+      - "CORRETTO_JDK8"
+  ProductVersion:
+    Type: String
+    Default: 6.6.0
+    AllowedValues:
+      - 6.6.0
+  InternalPrepareForTest:
+    Type: String
+    Default: "False"
+    AllowedValues:
+      - "False"
+      - "True"
+  DBUsername:
+    Type: String
+    MinLength: 4
+    AllowedPattern: '[A-Za-z0-9\-]+'
+  DBPassword:
+    Type: String
+    MinLength: 8
+    NoEcho: true
+  DBAllocationStorage:
+    Description: Provide storage size in Gigabytes
+    Type: Number
+    Default: 20
+  ElasticSearchEndpoint:
+    Type: String
+    Default: ""
+  DBInstanceType:
+    Description: If the selected DB Engine is "SQL Server", please use "db.m4.large" as instance type
+    Type: String
+    Default: db.t2.medium
+    AllowedValues:
+      - db.t2.medium
+      - db.t2.large
+      - db.t2.xlarge
+      - db.t2.2xlarge
+      - db.m3.medium
+      - db.m3.large
+      - db.m3.xlarge
+      - db.m3.2xlarge
+      - db.m4.large
+  DB:
+    Type: String
+    Default: MySQL-5.7
+    AllowedValues:
+      - MySQL-5.6
+      - MySQL-5.7
+      - Postgres-9.6
+      - Postgres-10.5
+      - Oracle-SE1-11.2
+      - Oracle-SE2-12.1
+      - SQLServer-SE-13.00
+      - SQLServer-SE-14.00
+  BastionOperatingSystem:
+    Description: Operating System for Bastion Instance
+    Type: String
+    Default: Ubuntu1804
+    AllowedValues:
+      - Ubuntu1804
+      - CentOS7
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+    Default: Dev
+  OperatingSystem:
+    Type: String
+    Default: Ubuntu1804
+    AllowedValues:
+      - Ubuntu1804
+      - CentOS7
+  ElasticSearchRegion:
+    Type: String
+    Default: "us-east-1"
+    AllowedValues:
+      - "us-east-1"
+      - "us-east-2"
+      - "us-west-1"
+      - "us-west-2"
+      - "ap-southeast-2"
+      - "eu-west-1"
+  VpcCIDR:
+    Description: Please enter the IP range (CIDR notation) for this VPC
+    Type: String
+    Default: 10.0.0.0/16
+  PublicSubnet1CIDR:
+    Description: IP range (CIDR notation) for the public subnet in the first Availability Zone
+    Type: String
+    Default: 10.0.254.0/24
+  PublicSubnet2CIDR:
+    Description: IP range (CIDR notation) for the public subnet in the second Availability Zone
+    Type: String
+    Default: 10.0.252.0/24
+  PrivateSubnet1CIDR:
+    Description: IP range (CIDR notation) for the private subnet in the first Availability Zone
+    Type: String
+    Default: 10.0.1.0/24
+  PrivateSubnet2CIDR:
+    Description: IP range (CIDR notation) for the private subnet in the second Availability Zone
+    Type: String
+    Default: 10.0.2.0/24
+
+Resources:
+  WSO2Network:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://aws-nested-cloudformation.s3.amazonaws.com/wso2ei-6.6.0/network.yaml
+      TimeoutInMinutes: '60'
+      Parameters:
+        EnvironmentName: !Ref EnvironmentName
+        VpcCIDR: !Ref VpcCIDR
+        PublicSubnet1CIDR: !Ref PublicSubnet1CIDR
+        PublicSubnet2CIDR: !Ref PublicSubnet2CIDR
+        PrivateSubnet1CIDR: !Ref PrivateSubnet1CIDR
+        PrivateSubnet2CIDR: !Ref PrivateSubnet2CIDR
+        KeyPairName: !Ref KeyPairName
+        BastionInstanceType: !Ref BastionInstanceType
+        OperatingSystem: !Ref BastionOperatingSystem
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} WSO2Network
+
+  Database:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://aws-nested-cloudformation.s3.amazonaws.com/wso2ei-6.6.0/database.yaml
+      TimeoutInMinutes: '60'
+      Parameters:
+        DBUsername: !Ref DBUsername
+        DBPassword: !Ref DBPassword
+        DB: !Ref DB
+        DBAllocationStorage: !Ref DBAllocationStorage
+        DBInstanceType: !Ref DBInstanceType
+        EnvironmentName: !Ref EnvironmentName
+        WSO2VPC: !GetAtt WSO2Network.Outputs.VPC
+        WSO2PrivateSubnet1: !GetAtt WSO2Network.Outputs.PrivateSubnet1
+        WSO2PrivateSubnet2: !GetAtt WSO2Network.Outputs.PrivateSubnet2
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} WSO2Database
+
+  WSO2EnterpriseIntegratorSetup:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://aws-nested-cloudformation.s3.amazonaws.com/wso2ei-6.6.0/integrator-with-analytics.yaml
+      TimeoutInMinutes: '60'
+      Parameters:
+        AWSAccessKeyId: !Ref AWSAccessKeyId
+        AWSAccessKeySecret: !Ref AWSAccessKeySecret
+        CertificateName: !Ref CertificateName
+        CustomUserData: !Ref CustomUserData
+        DBUsername: !Ref DBUsername
+        DBPassword: !Ref DBPassword
+        DB: !Ref DB
+        ElasticSearchEndpoint: !Ref ElasticSearchEndpoint
+        ElasticSearchRegion: !Ref ElasticSearchRegion
+        EnvironmentName: !Ref EnvironmentName
+        JDK: !Ref JDK
+        KeyPairName: !Ref KeyPairName
+        OperatingSystem: !Ref OperatingSystem
+        WSO2EIDBInstanceEndpointAddress: !GetAtt Database.Outputs.WSO2EIDBInstanceEndpointAddress
+        WSO2EIDBInstanceEndpointPort: !GetAtt Database.Outputs.WSO2EIDBInstanceEndpointPort
+        WSO2InstanceType: !Ref WSO2InstanceType
+        WSO2EIVPC: !GetAtt WSO2Network.Outputs.VPC
+        WSO2EIPrivateSubnet1: !GetAtt WSO2Network.Outputs.PrivateSubnet1
+        WSO2EIPrivateSubnet2: !GetAtt WSO2Network.Outputs.PrivateSubnet2
+        WSO2EIPublicSubnet1: !GetAtt WSO2Network.Outputs.PublicSubnet1
+        WSO2EIPublicSubnet2: !GetAtt WSO2Network.Outputs.PublicSubnet2
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} WSO2EnterpriseIntegratorSetup
+
+# Outputs:
+#   EIPortalURL:
+#     Value: !Join
+#       - ''
+#       - - 'https://'
+#         - !GetAtt
+#           - WSO2EIAnalyticsLoadBalancer
+#           - DNSName
+#         - ':9643/portal'
+#     Description: Identity Server Analytics Dashboard
+#   MgtConsoleUrl:
+#     Value: !Join
+#       - ''
+#       - - 'https://'
+#         - !GetAtt
+#           - WSO2EILoadBalancer
+#           - DNSName
+#         - '/carbon'
+#     Description: Integrator Carbon Management Console URL
+#   CarbonServerUrl:
+#     Value: !Join
+#       - ''
+#       - - 'https://'
+#         - !GetAtt
+#           - WSO2EILoadBalancer
+#           - DNSName
+#         - '/services'
+#     Description: Carbon Server URL
+#   ESBHttpUrl:
+#     Value: !Join
+#       - ''
+#       - - 'http://'
+#         - !GetAtt
+#           - WSO2EILoadBalancer
+#           - DNSName
+#         - ':8280'
+#     Description: ESB HTTP URL
+#   ESBHttpsUrl:
+#     Value: !Join
+#       - ''
+#       - - 'https://'
+#         - !GetAtt
+#           - WSO2EILoadBalancer
+#           - DNSName
+#         - ':8243'
+#     Description: ESB HTTPSURL
+#   MonitoringHttpUrl:
+#     Value: !Join
+#       - ''
+#       - - 'http://'
+#         - !GetAtt
+#           - MonitoringInstance
+#           - PublicDnsName
+#         - ':3000/d/dxHncuHS/'
+#     Description: Monitoring HTTP URL
+#   EIStackName:
+#     Value: !Ref AWS::StackName
+#     Description: Stack Name of the EI cluster
+#   EIStackId:
+#     Value: !Ref AWS::StackId
+#     Description: Stack ID of the EI cluster
